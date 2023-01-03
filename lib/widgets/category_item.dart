@@ -47,7 +47,14 @@ class CategoryItem extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
-          category.name,
+          Text(
+            category.name!,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );

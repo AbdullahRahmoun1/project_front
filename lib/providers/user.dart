@@ -18,7 +18,7 @@ class User with ChangeNotifier {
   User(
       {required this.id,
       required this.name,
-      required this.imagePath,
+      this.imagePath = 'assets/images/user.png',
       this.category = const [],
       this.specialize = const [],
       this.spForSearch = const [],

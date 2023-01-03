@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../providers/experts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../widgets/app_drawer.dart';
 
 class HomeSceen extends StatelessWidget {
   static final routName = '/home';
@@ -40,13 +41,6 @@ class HomeSceen extends StatelessWidget {
               ),
             ],
           ),
-          // Text(
-          //   'your favorite list is empty',
-          //   style: TextStyle(
-          //     color: Color.fromARGB(255, 115, 114, 114),
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         );
       } else {
         return SingleChildScrollView(
@@ -70,7 +64,7 @@ class HomeSceen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home Page'),
       ),
-      drawer: Drawer(),
+      drawer: AppDrawer(),
       body: ListView(
         children: <Widget>[
           Padding(

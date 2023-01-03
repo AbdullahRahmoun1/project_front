@@ -4,14 +4,7 @@ import './category.dart';
 class Categories with ChangeNotifier {
   List<Category> _items = [
     Category(
-      name: Text(
-        'Bussnis',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      name: 'Bussnis',
       color: Colors.blue,
       icon: Icon(
         Icons.business_center,
@@ -20,14 +13,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
-      name: Text(
-        'Family',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      name: 'Family',
       color: Colors.red,
       icon: Icon(
         Icons.family_restroom,
@@ -36,14 +22,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
-      name: Text(
-        'psychology',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      name: 'psychology',
       color: Colors.brown,
       icon: Icon(
         Icons.psychology,
@@ -52,14 +31,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
-      name: Text(
-        'Medical',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      name: 'Medical',
       color: Colors.green,
       icon: Icon(
         Icons.medical_services,
@@ -68,14 +40,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
-      name: Text(
-        'Professional',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      name: 'Professional',
       color: Colors.orange,
       icon: Icon(
         Icons.workspace_premium,
@@ -84,6 +49,15 @@ class Categories with ChangeNotifier {
       ),
     )
   ];
+
+  // Text(
+  //       'Professional',
+  //       style: TextStyle(
+  //         fontSize: 20,
+  //         fontWeight: FontWeight.bold,
+  //         color: Colors.white,
+  //       ),
+  //     )
 
   List<Category> get items {
     return [..._items];

@@ -81,11 +81,8 @@ class Experts with ChangeNotifier {
     return [..._items];
   }
 
-  void searchItem(String? name) {
-    _items
-        .expand((element) => element.specialize)
-        .toList()
-        .where((element) => element.name == name);
+  List<User> searchItem(String? name) {
+    return _items.where((element) => element.name == name).toList();
   }
 
   void changeRate(String id, double? Newrate) {
@@ -95,5 +92,15 @@ class Experts with ChangeNotifier {
 
   void addExpert() {
     notifyListeners();
+  }
+
+  Set<String?> get specializes {
+    Set<String?> sp = {};
+    for (var i = 0; i < _items.length; i++) {
+      for (var j = 0; j < _items[i].spForSearch.length; j++) {
+        sp.add(_items[i].spForSearch[j]);
+      }
+    }
+    return sp;
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class Category with ChangeNotifier {
-  Text name;
+  String? name;
   Color color;
   Icon icon;
 

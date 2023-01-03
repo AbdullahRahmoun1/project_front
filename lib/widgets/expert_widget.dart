@@ -23,10 +23,12 @@ class _ExpertWidgetState extends State<ExpertWidget> {
       return expert.spForSearch.join(' . ');
     }
 
-    void getRate() {
+    double? rate = expert.rate;
+    double getRate() {
       setState(() {
-        expert.rate.toString();
+        rate = expert.rate;
       });
+      return rate!;
     }
 
     return InkWell(
@@ -68,7 +70,7 @@ class _ExpertWidgetState extends State<ExpertWidget> {
                 semanticLabel: '5',
               ),
               Text(
-                expert.rate.toString(),
+                getRate().toString(),
                 style: TextStyle(
                   color: Colors.amber,
                   fontSize: 12,

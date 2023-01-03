@@ -1,9 +1,11 @@
-import '../dummy_data.dart';
+import '../modles/specialize.dart';
+
 import '../widgets/expert_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/experts.dart';
 import '../providers/user.dart';
+import '../widgets/app_drawer.dart';
 
 class SearchScreen extends StatefulWidget {
   static final routName = '/search-screen';
@@ -15,11 +17,10 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    var expertsData = Provider.of<Experts>(context);
+    var expertsData = Provider.of<Experts>(context, listen: false);
     var experts = expertsData.items;
     // Li> sp = experts.where((element) => element.specialize != null);
-    List<User> dispaly_experts = experts;
-    TextEditingController? _textEditingController = TextEditingController();
+    var dispaly_experts = experts;
 
     void updateList(String? value) {
       List<User> result = [];
@@ -35,83 +36,40 @@ class _SearchScreenState extends State<SearchScreen> {
             .toList();
       }
       setState(() {
-        dispaly_experts = result;
-        //     .where(
-        //       (element) =>
-        //           element.name!.toLowerCase().contains(value!.toLowerCase()),
-        //       // .where((element) =>
-        //       //     element.name!.toLowerCase().contains(value.toLowerCase()))
-        //       // .toList()
-        //     )
-        //     .toList();
+        dispaly_experts = expertsData.searchItem(value);
       });
     }
 
     return Scaffold(
       appBar: AppBar(
-          // title: Container(
-          //   margin: EdgeInsets.only(top: 10, bottom: 10),
-          //   child: TextField(
-          //     style: TextStyle(color: Colors.deepPurple),
-          //     decoration: InputDecoration(
-          //       filled: true,
-          //       fillColor: Color.fromARGB(255, 235, 235, 235),
-          //       border: OutlineInputBorder(
-          //         borderRadius: BorderRadius.circular(15),
-          //         borderSide: BorderSide.none,
-          //       ),
-          //       hintText: 'You can enter the name of the specialty',
-          //       prefixIcon: Icon(Icons.search),
-          //       prefixIconColor: Colors.deepPurple,
-          //     ),
-          //   ),
-          // ),
+        title: Text(
+          'Search for specialize & name',
+          style: TextStyle(fontSize: 18),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: mySearchDelegate(),
+              );
+            },
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 30,
+            ),
           ),
-      drawer: const Drawer(),
+        ],
+      ),
+      drawer: AppDrawer(),
       body: Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(left: 15, right: 15, top: 20),
-              child: Text(
-                'Search for expert',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             SizedBox(
               height: 10,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 15, right: 15),
-              child: TextField(
-                onSubmitted: (value) {
-                  setState(() {
-                    expertsData.searchItem(value);
-                  });
-                },
-                controller: _textEditingController,
-                style: TextStyle(color: Colors.deepPurple),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 235, 235, 235),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: 'ُEnter your expert name like \'Alaa\'',
-                  prefixIcon: Icon(Icons.search),
-                  prefixIconColor: Colors.deepPurple,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
             ),
             Expanded(
               child: dispaly_experts.length == 0
@@ -134,6 +92,71 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class mySearchDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {
+          if (query.isEmpty) {
+            close(context, null);
+          } else
+            query = '';
+        },
+        icon: Icon(Icons.clear),
+      ),
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          close(context, null); //close search bar
+        },
+        icon: Icon(
+          Icons.arrow_back,
+        ));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    var expertsData = Provider.of<Experts>(context);
+    var experts = expertsData.items;
+    final filtterExpert = experts
+        .where((element) =>
+            element.spForSearch.contains(query) ||
+            element.name!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemBuilder: (context, index) => ChangeNotifierProvider.value(
+        value: filtterExpert[index],
+        child: ExpertWidget(),
+      ),
+      itemCount: filtterExpert.length,
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String?> sp =
+        Provider.of<Experts>(context, listen: false).specializes.toList();
+
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        final suggestion = sp[index];
+        return ListTile(
+          title: Text(suggestion!),
+          onTap: () {
+            query = suggestion;
+          },
+        );
+      },
+      itemCount: sp.length,
     );
   }
 }

@@ -1,8 +1,11 @@
+import 'package:consulting_app/modles/http_exception.dart';
+import 'package:provider/provider.dart';
+
 import '../screen/tabs_screen.dart';
 
-import '../screen/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import '../server/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -104,14 +107,28 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
-    'email': '',
-    'password': '',
-  };
+  Map<String, String> _authData = {'email': '', 'password': '', 'name': ''};
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _showErrorDilogMessage(String? massage) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('We have error GG'),
+              content: Text(massage!),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+              ],
+            ));
+  }
+
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -120,12 +137,29 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false)
+            .LogIn(_authData['email'], _authData['password']);
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false).SignUp(
+            _authData['name'], _authData['email'], _authData['password']);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = 'How can you be in this bad to get this error';
+      if (error.toString().contains('The selected phone is invalid.')) {
+        errorMessage =
+            'Your phone number or password is not correct,please try again';
+      }
+      _showErrorDilogMessage(errorMessage);
+    } catch (error) {
+      var errorMessage = 'Some thing went wrong try again later';
+      _showErrorDilogMessage(errorMessage);
     }
-    Navigator.of(context).pushReplacementNamed(TabsScreen.routName);
+
+    // Navigator.of(context).pushReplacementNamed(TabsScreen.routName);
     setState(() {
       _isLoading = false;
     });
@@ -215,20 +249,33 @@ class _AuthCardState extends State<AuthCard> {
                       ),
                     ),
                   ),
-                // SizedBox(
-                //   height: 10,
-                // ),
+
+                if (_authMode == AuthMode.Signup)
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Name'),
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Just enter your name!';
+                      }
+                      if (value.length < 2) {
+                        return 'This is a name for dog , Enter good name :)';
+                      }
+                    },
+                    onSaved: (newValue) {
+                      _authData['name'] = newValue!;
+                    },
+                  ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Phone-Number'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value!.isEmpty ||
-                        value.length != 10 ||
-                        RegExp(r'^[A-Za-z]').hasMatch(value)) {
+                    if (value!.isEmpty || value.length < 7) {
                       return 'Invalid Phone number!';
                     }
-                    if (!value.startsWith('09')) {
-                      return 'This not a syrian number';
+                    if (RegExp(r'.[A-Za-z]').hasMatch(value)) {
+                      return 'Invalid Phone number!';
                     }
                     return null;
                   },
@@ -236,12 +283,13 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['email'] = value!;
                   },
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
+                    if (value!.isEmpty || value.length < 2) {
                       return 'How can you forget your password!';
                     }
                   },
@@ -249,6 +297,7 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['password'] = value!;
                   },
                 ),
+
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
@@ -262,9 +311,11 @@ class _AuthCardState extends State<AuthCard> {
                           }
                         : null,
                   ),
+
                 SizedBox(
                   height: 40,
                 ),
+
                 if (_isLoading)
                   CircularProgressIndicator()
                 else

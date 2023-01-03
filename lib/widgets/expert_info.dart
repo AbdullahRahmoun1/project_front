@@ -13,14 +13,30 @@ class ExpertInfo extends StatefulWidget {
 class _ExpertInfoState extends State<ExpertInfo> {
   @override
   Widget build(BuildContext context) {
-    final ExpertId = ModalRoute.of(context)?.settings.arguments as String;
-    final experts = Provider.of<Experts>(context);
-    final selectedExpert = experts.findById(ExpertId);
-    String? dis = selectedExpert.specialize.first.discription!;
-    String? phone = selectedExpert.specialize.first.number!;
-    String? adress = selectedExpert.specialize.first.adress!;
+    var ExpertId = ModalRoute.of(context)?.settings.arguments as String;
+    var experts = Provider.of<Experts>(context);
+    var selectedExpert = experts.findById(ExpertId);
+    String? spId = '0';
+    var sp =
+        selectedExpert.specialize.firstWhere((element) => element.id == spId);
+    var dis = sp.discription;
+    var phone = selectedExpert.specialize.first.number!;
+    var adress = selectedExpert.specialize.first.adress!;
 
-    String _selectedValue = selectedExpert.specialize[0].name!;
+    void changeSpId(String? value) {
+      var newId = selectedExpert.specialize
+          .firstWhere(
+            (element) => element.name == value,
+          )
+          .id;
+
+      spId = newId;
+      sp =
+          selectedExpert.specialize.firstWhere((element) => element.id == spId);
+      dis = sp.discription;
+    }
+
+    var _selectedValue = selectedExpert.specialize[0].name!;
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -46,8 +62,8 @@ class _ExpertInfoState extends State<ExpertInfo> {
                 .toList(),
             onChanged: (value) {
               setState(() {
-                dis = 'dd';
-                _selectedValue = value.toString();
+                //_selectedValue = value!;
+                changeSpId(value);
               });
             },
           ),

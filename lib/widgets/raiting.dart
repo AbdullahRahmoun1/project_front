@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import '../providers/user.dart';
+import '../providers/experts.dart';
 
 class Rating extends StatefulWidget {
   const Rating({super.key});
@@ -14,12 +14,12 @@ class _RatingState extends State<Rating> {
   @override
   Widget build(BuildContext context) {
     final ExpertId = ModalRoute.of(context)?.settings.arguments as String;
-    final expert = Provider.of<User>(context);
-    // final selectedExpert = experts.findById(ExpertId);
-    // double? _Rating = selectedExpert.rate;
+    final experts = Provider.of<Experts>(context, listen: false);
+    final selectedExpert = experts.findById(ExpertId);
+    double? _Rating = selectedExpert.rate;
 
     Widget buildRatring() => RatingBar.builder(
-          initialRating: expert.rate!,
+          initialRating: _Rating!,
           minRating: 1,
           updateOnDrag: true,
           itemPadding: const EdgeInsets.symmetric(horizontal: 7),
@@ -28,7 +28,8 @@ class _RatingState extends State<Rating> {
                 color: Colors.amber,
               )),
           onRatingUpdate: (rating) => setState(() {
-            expert.changRate(rating);
+            _Rating = rating;
+            experts.changeRate(ExpertId, rating);
           }),
         );
 
@@ -79,7 +80,7 @@ class _RatingState extends State<Rating> {
           alignment: Alignment.center,
           margin: EdgeInsets.all(10),
           child: RatingBar.builder(
-            initialRating: expert.rate!,
+            initialRating: _Rating!,
             minRating: 1,
             updateOnDrag: true,
             itemPadding: const EdgeInsets.symmetric(horizontal: 7),
@@ -88,14 +89,15 @@ class _RatingState extends State<Rating> {
                   color: Colors.amber,
                 )),
             onRatingUpdate: (rating) => setState(() {
-              expert.changRate(rating);
+              _Rating = rating;
+              selectedExpert.rate = rating;
             }),
           ),
         ),
         Container(
           margin: EdgeInsets.only(left: 50),
           child: Text(
-            'Rating ${expert.rate}',
+            'Rating $_Rating',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
