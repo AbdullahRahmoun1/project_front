@@ -105,6 +105,18 @@ class AuthCard extends StatefulWidget {
 }
 
 class _AuthCardState extends State<AuthCard> {
+  final _phone = FocusNode();
+  final _password = FocusNode();
+  final _rePassword = FocusNode();
+
+  @override
+  void dispose() {
+    _phone;
+    _password;
+    _rePassword;
+    super.dispose();
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {'email': '', 'password': '', 'name': ''};
@@ -223,37 +235,14 @@ class _AuthCardState extends State<AuthCard> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: <Widget>[
-                //here to add image for user
-                if (_authMode == AuthMode.Signup)
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.deepPurple,
-                      radius: 52,
-                      child: CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                        // backgroundImage:
-                        //     _image == null ? null : FileImage(_image!),
-                        radius: 50,
-                        child: GestureDetector(
-                          onTap: () {
-                            print('camer start');
-                            // getGall();
-                          },
-                          child: const Icon(
-                            Icons.camera_outlined,
-                            size: 60,
-                            color: Colors.deepPurple,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Name'),
                     keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_phone);
+                    },
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Just enter your name!';
@@ -266,10 +255,10 @@ class _AuthCardState extends State<AuthCard> {
                       _authData['name'] = newValue!;
                     },
                   ),
-
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Phone-Number'),
                   keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 7) {
                       return 'Invalid Phone number!';
@@ -283,11 +272,15 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['email'] = value!;
                   },
                 ),
-
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
+                  textInputAction: TextInputAction.next,
                   controller: _passwordController,
+                  focusNode: _password,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_rePassword);
+                  },
                   validator: (value) {
                     if (value!.isEmpty || value.length < 2) {
                       return 'How can you forget your password!';
@@ -297,12 +290,13 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['password'] = value!;
                   },
                 ),
-
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
                     decoration: InputDecoration(labelText: 'Confirm Password'),
+                    textInputAction: TextInputAction.done,
                     obscureText: true,
+                    focusNode: _rePassword,
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
                             if (value != _passwordController.text) {
@@ -311,27 +305,55 @@ class _AuthCardState extends State<AuthCard> {
                           }
                         : null,
                   ),
-
                 SizedBox(
                   height: 40,
                 ),
-
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
-                  TextButton(
+                  ElevatedButton(
                     child: Text(
                       _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     onPressed: _submit,
                   ),
                 TextButton(
-                  child: Text(
-                    '${_authMode == AuthMode.Login ? 'Don\'t have account?SIGN UP' : 'Already have acount?LOGIN'}',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.grey),
+                  child: RichText(
+                    text: _authMode == AuthMode.Login
+                        ? TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'You dont\'t have account? ',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                              TextSpan(
+                                text: 'Sign up',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.deepPurple,
+                                    fontSize: 18),
+                              ),
+                            ],
+                          )
+                        : TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'You already has account? ',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                              TextSpan(
+                                text: 'Log in',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.deepPurple,
+                                    fontSize: 18),
+                              ),
+                            ],
+                          ),
                   ),
                   onPressed: _switchAuthMode,
                 ),

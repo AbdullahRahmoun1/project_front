@@ -43,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Search for specialize & name',
+          'Search',
           style: TextStyle(fontSize: 18),
         ),
         actions: <Widget>[

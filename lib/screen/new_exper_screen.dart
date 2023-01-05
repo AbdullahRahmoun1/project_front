@@ -34,7 +34,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
         );
     return Scaffold(
       appBar: AppBar(
-        title: Text('Maneging expert'),
+        title: Text('Royal pass'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
@@ -53,14 +53,14 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
         child: Form(
           child: ListView(
             children: <Widget>[
-              Container(
-                width: 200,
-                height: 200,
-                child: Image.asset(
-                  'assets/images/crown.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
+              // Container(
+              //   width: 200,
+              //   height: 200,
+              //   child: Image.asset(
+              //     'assets/images/crown.png',
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               SizedBox(
                 height: 15,
               ),
@@ -163,6 +163,21 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 ),
                 textInputAction: TextInputAction.done,
                 focusNode: _adress,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: screenWidth / 2,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Add',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
