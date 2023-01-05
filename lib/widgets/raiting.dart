@@ -28,7 +28,7 @@ class _RatingState extends State<Rating> {
                 color: Colors.amber,
               )),
           onRatingUpdate: (rating) => setState(() {
-            _Rating = rating;
+            _Rating = rating; 
             experts.changeRate(ExpertId, rating);
           }),
         );
