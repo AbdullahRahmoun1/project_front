@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 class Categories with ChangeNotifier {
   List<Category> _items = [
     Category(
+      name: 'hi',
       id: 1,
       color: Colors.green,
       icon: Icon(
@@ -17,6 +18,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
+      name: 'hi',
       id: 2,
       color: Colors.orange,
       icon: Icon(
@@ -26,6 +28,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
+      name: 'hi',
       id: 3,
       color: Colors.blue,
       icon: Icon(
@@ -35,6 +38,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
+      name: 'hi',
       id: 4,
       color: Colors.red,
       icon: Icon(
@@ -44,6 +48,7 @@ class Categories with ChangeNotifier {
       ),
     ),
     Category(
+      name: 'hi',
       id: 5,
       color: Colors.brown,
       icon: Icon(

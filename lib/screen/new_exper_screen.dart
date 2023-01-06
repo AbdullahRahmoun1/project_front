@@ -20,7 +20,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = Provider.of<Categories>(context).items;
-    var _selectedValue = categories[0].name!;
+    //var selectedValue = categories[0].name;
     double screenWidth = MediaQuery.of(context).size.width;
     DropdownMenuItem<String?> buildMenuItem(Category item) => DropdownMenuItem(
           value: item.name,
@@ -83,7 +83,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 decoration: InputDecoration(
                   labelText: 'Select category',
                 ),
-                value: _selectedValue,
+                // value: selectedValue,
                 items: categories
                     .map(
                       (e) => DropdownMenuItem(
@@ -94,7 +94,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    _selectedValue = value!;
+                    //   selectedValue = value!;
                   });
                 },
               ),
