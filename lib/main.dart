@@ -1,3 +1,4 @@
+import './providers/category.dart';
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
 import './providers/experts.dart';
@@ -33,8 +34,56 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => Experts(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => Categories(),
+        ChangeNotifierProxyProvider<Auth, Categories>(
+          update: (context, auth, previousCategory) =>
+              Categories(auth.token, previousCategory!.items),
+          create: (context) => Categories('', [
+            Category(
+              id: 3,
+              color: Colors.blue,
+              icon: Icon(
+                Icons.business_center,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 4,
+              color: Colors.red,
+              icon: Icon(
+                Icons.family_restroom,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 5,
+              color: Colors.brown,
+              icon: Icon(
+                Icons.psychology,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 1,
+              color: Colors.green,
+              icon: Icon(
+                Icons.medical_services,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 2,
+              color: Colors.orange,
+              icon: Icon(
+                Icons.workspace_premium,
+                color: Colors.white,
+                size: 45,
+              ),
+            )
+          ]),
         ),
       ],
       child: Consumer<Auth>(

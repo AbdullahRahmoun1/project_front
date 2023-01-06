@@ -1,3 +1,5 @@
+import 'package:consulting_app/server/auth.dart';
+
 import '../widgets/categories_list.dart';
 
 import '../providers/categories.dart';
@@ -8,8 +10,40 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/app_drawer.dart';
 
-class HomeSceen extends StatelessWidget {
+class HomeSceen extends StatefulWidget {
   static final routName = '/home';
+
+  @override
+  State<HomeSceen> createState() => _HomeSceenState();
+}
+
+class _HomeSceenState extends State<HomeSceen> {
+  var _isInit = true;
+  var _isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoaded = true;
+      });
+      var token = Provider.of<Auth>(context).token;
+      Provider.of<Categories>(context, listen: false)
+          .FetchCategory(token)
+          .then((_) {
+        setState(() {
+          _isLoaded = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,45 +99,49 @@ class HomeSceen extends StatelessWidget {
         title: Text('Home Page'),
       ),
       drawer: AppDrawer(),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
+      body: _isLoaded
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                  ),
+                  child: Text(
+                    "Categories ",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                CategoriesList(),
+                SizedBox(
+                  height: 10,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                  ),
+                  child: Text(
+                    "Favorites ",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                getFavorite()
+              ],
             ),
-            child: Text(
-              "Categories ",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          CategoriesList(),
-          SizedBox(
-            height: 10,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-            ),
-            child: Text(
-              "Favorites ",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          getFavorite()
-        ],
-      ),
     );
   }
 }

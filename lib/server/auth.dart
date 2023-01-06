@@ -38,7 +38,6 @@ class Auth with ChangeNotifier {
       print(respon.statusCode);
       final responData = json.decode(respon.body);
       _token = responData['token'];
-
       if (respon.statusCode != 200) {
         throw HttpException(
           responData['msg'],

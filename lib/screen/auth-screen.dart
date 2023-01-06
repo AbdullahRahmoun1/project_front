@@ -161,7 +161,8 @@ class _AuthCardState extends State<AuthCard> {
       }
     } on HttpException catch (error) {
       var errorMessage = 'How can you be in this bad to get this error';
-      if (error.toString().contains('The selected phone is invalid.')) {
+      if (error.toString().contains('The selected phone is invalid.') ||
+          error.toString().contains('msg: The phone has already been taken.')) {
         errorMessage =
             'Your phone number or password is not correct,please try again';
       }
@@ -319,6 +320,9 @@ class _AuthCardState extends State<AuthCard> {
                     ),
                     onPressed: _submit,
                   ),
+                SizedBox(
+                  height: 30,
+                ),
                 TextButton(
                   child: RichText(
                     text: _authMode == AuthMode.Login
