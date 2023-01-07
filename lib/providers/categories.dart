@@ -59,21 +59,22 @@ class Categories with ChangeNotifier {
     ),
   ];
 
-  final String? authToken;
-  Categories(this.authToken, this._items);
+  // final String? authToken;
+  // Categories(this.authToken, this._items);
 
   Future<void> FetchCategory(String? token) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/home');
+      final url = Uri.parse('http://10.0.2.2:8000/api/specialties');
       Map<String, String> header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       };
       final response = await http.get(url, headers: header);
-      final extractData = json.decode(response.body) as Map<String?, dynamic>;
+      final extractData = json.decode(response.body) as List<dynamic>;
       for (var i = 0; i < items.length; i++) {
-        items[i].name = extractData['Specialities'][i]['specialtyName'];
+        items[i].name = extractData[i]['specialtyName'];
       }
+      print(response.statusCode);
       print(json.decode(response.body));
     } catch (e) {
       print(e);
