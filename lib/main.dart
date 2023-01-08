@@ -19,7 +19,6 @@ import 'screen/expert_info_screen.dart';
 import './screen/seach_screen.dart';
 import './screen/new_exper_screen.dart';
 import './server/auth.dart';
-import 'server/server.dart';
 
 void main() => runApp(const MyApp());
 
@@ -37,8 +36,6 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
-        ),ChangeNotifierProvider.value(
-          value: Server(),
         ),
         ChangeNotifierProvider(
           create: (context) => Experts(),

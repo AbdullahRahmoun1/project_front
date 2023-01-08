@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import './category.dart';
 import '../server/auth.dart';
 import 'package:http/http.dart' as http;
-import '../server/server.dart';
 
 class Categories with ChangeNotifier {
   List<Category> _items = [
@@ -63,6 +62,26 @@ class Categories with ChangeNotifier {
 
   // final String? authToken;
   // Categories(this.authToken, this._items);
+
+  Future<void> FetchCategory(String? token) async {
+    try {
+      final url = Uri.parse('http://10.0.2.2:8000/api/specialties');
+      Map<String, String> header = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      final response = await http.get(url, headers: header);
+      final extractData =
+          json.decode(response.body) as LinkedHashMap<String, dynamic>;
+      for (var i = 0; i < items.length; i++) {
+        items[i].name = extractData['data'][i]['specialtyName'];
+      }
+      print(response.statusCode);
+      print(json.decode(response.body));
+    } catch (e) {
+      print(e);
+    }
+  }
 
   List<Category> get items {
     return [..._items];
