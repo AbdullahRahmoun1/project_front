@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   bool isLogedIn = false;
@@ -17,6 +18,11 @@ class Auth with ChangeNotifier {
   String? get token {
     if (_token != null) return _token;
     return null;
+  }
+
+  void logout() {
+    _token = null;
+    notifyListeners();
   }
 
   Future<void> LogIn(String? phone, String? password) async {
@@ -37,13 +43,16 @@ class Auth with ChangeNotifier {
       print('respon');
       print(respon.statusCode);
       final responData = json.decode(respon.body);
-      _token = responData['token'];
+      _token = responData['data'];
       if (respon.statusCode != 200) {
         throw HttpException(
-          responData['msg'],
+          responData['message'],
         );
       }
       notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({'data': _token});
+      prefs.setString('userData', userData);
     } catch (e) {
       throw e;
     }
@@ -67,10 +76,10 @@ class Auth with ChangeNotifier {
       print('respon');
       print(respon.statusCode);
       final responData = json.decode(respon.body);
-      _token = responData['token'];
+      _token = responData['data'];
       if (respon.statusCode != 200) {
         throw HttpException(
-          responData['msg'],
+          responData['message'],
         );
       }
       notifyListeners();

@@ -1,11 +1,13 @@
 import '../modles/specialize.dart';
-
+import 'dart:convert';
+import '../server/auth.dart';
 import '../widgets/expert_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/experts.dart';
 import '../providers/user.dart';
 import '../widgets/app_drawer.dart';
+import 'package:http/http.dart' as http;
 
 class SearchScreen extends StatefulWidget {
   static final routName = '/search-screen';
@@ -15,11 +17,47 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  var _isInit = true;
+  var _isLoaded = false;
+  String? _userName;
+  String? _userPhone;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> forDrawer(String? token) async {
+    try {
+      final url = Uri.parse('http://10.0.2.2:8000/api/user/-1');
+      Map<String, String> header = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      final response = await http.get(url, headers: header);
+      final extraxtData = json.decode(response.body) as Map<String, dynamic>;
+      setState(() {
+        _userName = extraxtData['data']['name'];
+        _userPhone = extraxtData['data']['phone'];
+      });
+
+      print(json.decode(response.body));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    var token = Provider.of<Auth>(context).token;
+    forDrawer(token);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     var expertsData = Provider.of<Experts>(context, listen: false);
     var experts = expertsData.items;
-    // Li> sp = experts.where((element) => element.specialize != null);
     var dispaly_experts = experts;
 
     void updateList(String? value) {
@@ -62,7 +100,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(_userName, _userPhone),
       body: Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(

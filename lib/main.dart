@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import 'package:consulting_app/server/server.dart';
 
 import './providers/category.dart';
+=======
+>>>>>>> c9e6b52bc587f52a32757335f2d5d4fcf4c7625a
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
 import './providers/experts.dart';
@@ -10,6 +13,7 @@ import './screen/get_started_activate.dart';
 import './screen/tabs_screen.dart';
 import './screen/auth-screen.dart';
 import './screen/favorit_screen.dart';
+import './screen/splash_screen.dart';
 import './screen/home_screen.dart';
 import 'screen/expert_info_screen.dart';
 import './screen/seach_screen.dart';
@@ -36,8 +40,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => Experts(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => Server(),
+        ChangeNotifierProvider(<<<<<<< HEAD
+
+                  create: (context) => Server(),
         ),ChangeNotifierProxyProvider<Auth, Categories>(
           update: (context, auth, previousCategory) =>
               Categories(auth.token, previousCategory!.items),
@@ -88,6 +93,9 @@ class _MyAppState extends State<MyApp> {
               ),
             )
           ]),
+=======
+          create: (context) => Categories(),
+>>>>>>> c9e6b52bc587f52a32757335f2d5d4fcf4c7625a
         ),
       ],
       child: Consumer<Auth>(
