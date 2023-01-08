@@ -1,3 +1,5 @@
+import 'package:consulting_app/server/server.dart';
+
 import './providers/category.dart';
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
@@ -34,7 +36,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => Experts(),
         ),
-        ChangeNotifierProxyProvider<Auth, Categories>(
+        ChangeNotifierProvider(
+          create: (context) => Server(),
+        ),ChangeNotifierProxyProvider<Auth, Categories>(
           update: (context, auth, previousCategory) =>
               Categories(auth.token, previousCategory!.items),
           create: (context) => Categories('', [
@@ -118,7 +122,8 @@ class _MyAppState extends State<MyApp> {
             SearchScreen.routName: (context) => SearchScreen(),
             ExpertInfoScreen.routName: (context) => ExpertInfoScreen(),
             FavoritScreen.routName: (context) => FavoritScreen(),
-            NewExpertScreen.routName: (context) => NewExpertScreen(),
+            NewExpertScreen.routName: (context) => NewExpertScreen(),            NewExpertScreen.routName: (context) => NewExpertScreen(),
+
           },
           title: 'Flutter Demo',
         ),

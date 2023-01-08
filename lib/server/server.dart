@@ -5,8 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Server {
+class Server with ChangeNotifier{
   String? token;
+  static final routName="/server";
 
   Future<Map> singIn(String phone, String password) async {
     final result = {};
@@ -23,6 +24,11 @@ class Server {
     } catch (error) {
       print(error);
     }
+    return result;
+  }
+  Future<Map> uploadImage() async{
+    var result;
+
     return result;
   }
 }
