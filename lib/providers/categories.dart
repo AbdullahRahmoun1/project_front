@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -70,9 +71,10 @@ class Categories with ChangeNotifier {
         'Authorization': 'Bearer $token',
       };
       final response = await http.get(url, headers: header);
-      final extractData = json.decode(response.body) as List<dynamic>;
+      final extractData =
+          json.decode(response.body) as LinkedHashMap<String, dynamic>;
       for (var i = 0; i < items.length; i++) {
-        items[i].name = extractData[i]['specialtyName'];
+        items[i].name = extractData['data'][i]['specialtyName'];
       }
       print(response.statusCode);
       print(json.decode(response.body));

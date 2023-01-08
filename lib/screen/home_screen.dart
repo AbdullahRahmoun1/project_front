@@ -1,5 +1,6 @@
 import 'package:consulting_app/server/auth.dart';
-
+import 'dart:convert';
+import 'dart:io';
 import '../widgets/categories_list.dart';
 
 import '../providers/categories.dart';
@@ -9,6 +10,7 @@ import '../providers/experts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/app_drawer.dart';
+import 'package:http/http.dart' as http;
 
 class HomeSceen extends StatefulWidget {
   static final routName = '/home';
@@ -20,10 +22,31 @@ class HomeSceen extends StatefulWidget {
 class _HomeSceenState extends State<HomeSceen> {
   var _isInit = true;
   var _isLoaded = false;
+  bool _isExpert = false;
+  String? _userName;
+  String? _userPhone;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> forDrawer(String? token) async {
+    try {
+      final url = Uri.parse('http://10.0.2.2:8000/api/user/-1');
+      Map<String, String> header = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      final response = await http.get(url, headers: header);
+      final extraxtData = json.decode(response.body) as Map<String, dynamic>;
+      _userName = extraxtData['data']['name'];
+      _userPhone = extraxtData['data']['phone'];
+      _isExpert = extraxtData['data']['isExp'];
+      print(json.decode(response.body));
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -33,6 +56,7 @@ class _HomeSceenState extends State<HomeSceen> {
         _isLoaded = true;
       });
       var token = Provider.of<Auth>(context).token;
+      forDrawer(token);
       Provider.of<Categories>(context, listen: false)
           .FetchCategory(token)
           .then((_) {
@@ -97,8 +121,28 @@ class _HomeSceenState extends State<HomeSceen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.white,
+              size: 29,
+            ),
+            onPressed: () {},
+          ),
+          _isExpert
+              ? IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.calendar_month_rounded,
+                    color: Colors.white,
+                    size: 29,
+                  ),
+                )
+              : Container()
+        ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(_userName, _userPhone),
       body: _isLoaded
           ? Center(
               child: CircularProgressIndicator(),
