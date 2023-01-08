@@ -57,7 +57,6 @@ class GetStartedActivate extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
                               Navigator.of(context).pushReplacementNamed(
                                   NewExpertScreen.routName);
                             },
