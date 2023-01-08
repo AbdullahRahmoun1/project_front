@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import 'package:consulting_app/server/server.dart';
 
 import './providers/category.dart';
+=======
+>>>>>>> c9e6b52bc587f52a32757335f2d5d4fcf4c7625a
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
 import './providers/experts.dart';
