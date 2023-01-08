@@ -1,11 +1,8 @@
 import 'package:consulting_app/modles/http_exception.dart';
 import 'package:provider/provider.dart';
-
-import '../screen/tabs_screen.dart';
-
 import 'package:flutter/material.dart';
-
 import '../server/auth.dart';
+import '../server/server.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -161,11 +158,6 @@ class _AuthCardState extends State<AuthCard> {
       }
     } on HttpException catch (error) {
       var errorMessage = 'How can you be in this bad to get this error';
-      if (error.toString().contains('The selected phone is invalid.') ||
-          error.toString().contains('msg: The phone has already been taken.')) {
-        errorMessage =
-            'Your phone number or password is not correct,please try again';
-      }
       _showErrorDilogMessage(errorMessage);
     } catch (error) {
       var errorMessage = 'Some thing went wrong try again later';

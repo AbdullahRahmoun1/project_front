@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 
-class Server with ChangeNotifier {
-  final String baseUrl='127.0.0.1';
+final String baseUrl='127.0.0.1';
 
+class Server with ChangeNotifier {
   String? _getToken(context) {
     return Provider.of<Auth>(context, listen: false).token;
   }
@@ -42,13 +42,13 @@ class Server with ChangeNotifier {
       'Authorization': 'Bearer $token',
     };
     final response = await http.get(url, headers: header);
-    final extraxtData1 = json.decode(response.body) as Map<String, dynamic>;
-    dynamic extraxtData = Map<String, dynamic>;
-    print( extraxtData1['data']['phone']);
+    final extraxtData = json.decode(response.body) as Map<String, dynamic>;
     return {
-      'name': extraxtData1['data']['name'],
-      'phone': extraxtData1['data']['phone'],
-      'isExp': extraxtData1['data']['isExp']
+      'name': extraxtData['data']['name'],
+      'phone': extraxtData['data']['phone'],
+      'isExp': extraxtData['data']['isExp']
     };
   }
+
+  ///Future<>
 }
