@@ -60,15 +60,13 @@ class Server with ChangeNotifier {
 
   Future<Experts> getAllFavorite(context) async {
     Experts exps=Experts();
-
-    final url = Uri.parse('http://$baseUrl:8000/api/favorite');
-
+    
     var token = _getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
-
+    final url = Uri.parse('http://$baseUrl:8000/api/favorite');
     final response = await http.get(url, headers: header);
     final JSONresponse = json.decode(response.body);
 
