@@ -40,9 +40,12 @@ class _HomeSceenState extends State<HomeSceen> {
       };
       final response = await http.get(url, headers: header);
       final extraxtData = json.decode(response.body) as Map<String, dynamic>;
-      _userName = extraxtData['data']['name'];
-      _userPhone = extraxtData['data']['phone'];
-      _isExpert = extraxtData['data']['isExp'];
+      setState(() {
+        _userName = extraxtData['data']['name'];
+        _userPhone = extraxtData['data']['phone'];
+        _isExpert = extraxtData['data']['isExp'];
+      });
+
       print(json.decode(response.body));
     } catch (e) {
       print(e);

@@ -3,6 +3,7 @@ import 'package:consulting_app/providers/category.dart';
 import '../providers/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class NewExpertScreen extends StatefulWidget {
   static const routName = '/new-expert';
@@ -12,15 +13,37 @@ class NewExpertScreen extends StatefulWidget {
 }
 
 class _EditNewExpertScreen extends State<NewExpertScreen> {
-  final _priceFocusNode = FocusNode();
-  final _disFocusNode = FocusNode();
-  final _adress = FocusNode();
-
   String? value = 'Choos a category';
+  var _priceFocusNode = FocusNode();
+  var _disFocusNode = FocusNode();
+  var _adress = FocusNode();
+  var _form = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    _priceFocusNode.dispose();
+    _adress.dispose();
+    _disFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final categories = Provider.of<Categories>(context).items;
-    //var selectedValue = categories[0].name;
+    var categories = Provider.of<Categories>(context).items;
+
+    var selectedValue = categories[0].name;
+
+    var expertInfo = {
+      "specialty_id": 0,
+      "price": 0,
+      "description": "",
+      "address": "",
+      "specialization": ""
+    };
+
+    void _saveForm() {
+      _form.currentState!.save();
+    }
+
     double screenWidth = MediaQuery.of(context).size.width;
     DropdownMenuItem<String?> buildMenuItem(Category item) => DropdownMenuItem(
           value: item.name,
@@ -44,23 +67,18 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
           IconButton(
             icon: Icon(Icons.add),
             color: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              _saveForm();
+            },
           ),
         ],
       ),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Form(
+          key: _form,
           child: ListView(
             children: <Widget>[
-              // Container(
-              //   width: 200,
-              //   height: 200,
-              //   child: Image.asset(
-              //     'assets/images/crown.png',
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
               SizedBox(
                 height: 15,
               ),
@@ -80,10 +98,21 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                   color: Colors.deepPurple,
                   size: 30,
                 ),
+                onSaved: (newValue) {
+                  expertInfo = {
+                    "specialty_id": categories
+                        .firstWhere((element) => element.name == selectedValue)
+                        .id,
+                    "price": expertInfo['price']!,
+                    "description": expertInfo['description']!,
+                    "address": expertInfo['address']!,
+                    "specialization": expertInfo['specialization']!
+                  };
+                },
                 decoration: InputDecoration(
                   labelText: 'Select category',
                 ),
-                // value: selectedValue,
+                value: selectedValue,
                 items: categories
                     .map(
                       (e) => DropdownMenuItem(
@@ -94,7 +123,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    //   selectedValue = value!;
+                    selectedValue = value!;
                   });
                 },
               ),
@@ -118,6 +147,15 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                               FocusScope.of(context)
                                   .requestFocus(_priceFocusNode);
                             },
+                            onSaved: (newValue) {
+                              expertInfo = {
+                                "specialty_id": expertInfo['specialty_id']!,
+                                "price": expertInfo['price']!,
+                                "description": expertInfo['description']!,
+                                "address": expertInfo['address']!,
+                                "specialization": "$newValue"
+                              };
+                            },
                           ),
                         ),
                         SizedBox(width: 15),
@@ -133,6 +171,15 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                             onFieldSubmitted: (_) {
                               FocusScope.of(context)
                                   .requestFocus(_disFocusNode);
+                            },
+                            onSaved: (newValue) {
+                              expertInfo = {
+                                "specialty_id": expertInfo['specialty_id']!,
+                                "price": '$newValue',
+                                "description": expertInfo['description']!,
+                                "address": expertInfo['address']!,
+                                "specialization": expertInfo['specialization']!,
+                              };
                             },
                           ),
                         ),
@@ -153,6 +200,15 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_adress);
                 },
+                onSaved: (newValue) {
+                  expertInfo = {
+                    "specialty_id": expertInfo['specialty_id']!,
+                    "price": expertInfo['price']!,
+                    "description": '$newValue',
+                    "address": expertInfo['address']!,
+                    "specialization": expertInfo['specialization']!,
+                  };
+                },
               ),
               SizedBox(
                 height: 15,
@@ -163,6 +219,15 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 ),
                 textInputAction: TextInputAction.done,
                 focusNode: _adress,
+                onSaved: (newValue) {
+                  expertInfo = {
+                    "specialty_id": expertInfo['specialty_id']!,
+                    "price": expertInfo['price']!,
+                    "description": expertInfo['description']!,
+                    "address": '$newValue',
+                    "specialization": expertInfo['specialization']!,
+                  };
+                },
               ),
               SizedBox(
                 height: 20,
@@ -170,7 +235,10 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
               Container(
                 width: screenWidth / 2,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _saveForm();
+                    print(expertInfo);
+                  },
                   child: Text(
                     'Add',
                     style: TextStyle(
