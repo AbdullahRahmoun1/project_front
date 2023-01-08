@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import 'package:consulting_app/server/server.dart';
+
+import './providers/category.dart';
+=======
+>>>>>>> c9e6b52bc587f52a32757335f2d5d4fcf4c7625a
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
 import './providers/experts.dart';
@@ -37,8 +43,62 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => Experts(),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider(<<<<<<< HEAD
+
+                  create: (context) => Server(),
+        ),ChangeNotifierProxyProvider<Auth, Categories>(
+          update: (context, auth, previousCategory) =>
+              Categories(auth.token, previousCategory!.items),
+          create: (context) => Categories('', [
+            Category(
+              id: 3,
+              color: Colors.blue,
+              icon: Icon(
+                Icons.business_center,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 4,
+              color: Colors.red,
+              icon: Icon(
+                Icons.family_restroom,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 5,
+              color: Colors.brown,
+              icon: Icon(
+                Icons.psychology,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 1,
+              color: Colors.green,
+              icon: Icon(
+                Icons.medical_services,
+                color: Colors.white,
+                size: 45,
+              ),
+            ),
+            Category(
+              id: 2,
+              color: Colors.orange,
+              icon: Icon(
+                Icons.workspace_premium,
+                color: Colors.white,
+                size: 45,
+              ),
+            )
+          ]),
+=======
           create: (context) => Categories(),
+>>>>>>> c9e6b52bc587f52a32757335f2d5d4fcf4c7625a
         ),
       ],
       child: Consumer<Auth>(
@@ -73,7 +133,8 @@ class _MyAppState extends State<MyApp> {
             SearchScreen.routName: (context) => SearchScreen(),
             ExpertInfoScreen.routName: (context) => ExpertInfoScreen(),
             FavoritScreen.routName: (context) => FavoritScreen(),
-            NewExpertScreen.routName: (context) => NewExpertScreen(),
+            NewExpertScreen.routName: (context) => NewExpertScreen(),            NewExpertScreen.routName: (context) => NewExpertScreen(),
+
           },
           title: 'Flutter Demo',
         ),
