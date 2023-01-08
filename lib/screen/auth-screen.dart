@@ -2,8 +2,6 @@ import 'package:consulting_app/modles/http_exception.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../server/auth.dart';
-import '../server/server.dart';
-
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
