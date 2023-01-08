@@ -1,8 +1,4 @@
-import 'package:consulting_app/server/auth.dart';
-import 'dart:convert';
-import 'dart:io';
 import '../widgets/categories_list.dart';
-
 import '../providers/categories.dart';
 import '../widgets/home_favorites.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +6,7 @@ import '../providers/experts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/app_drawer.dart';
-import 'package:http/http.dart' as http;
+import '../server/server.dart';
 
 class HomeSceen extends StatefulWidget {
   static final routName = '/home';
@@ -23,45 +19,34 @@ class _HomeSceenState extends State<HomeSceen> {
   var _isInit = true;
   var _isLoaded = false;
   bool _isExpert = false;
-  String? _userName;
-  String? _userPhone;
+  String _userName = '';
+  String _userPhone = '';
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> forDrawer(String? token) async {
-    try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/user/-1');
-      Map<String, String> header = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-      final response = await http.get(url, headers: header);
-      final extraxtData = json.decode(response.body) as Map<String, dynamic>;
-      setState(() {
-        _userName = extraxtData['data']['name'];
-        _userPhone = extraxtData['data']['phone'];
-        _isExpert = extraxtData['data']['isExp'];
-      });
-
-      print(json.decode(response.body));
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     if (_isInit) {
       setState(() {
         _isLoaded = true;
       });
-      var token = Provider.of<Auth>(context).token;
-      forDrawer(token);
-      Provider.of<Categories>(context, listen: false)
-          .FetchCategory(token)
+      var items = Provider.of<Categories>(context).items;
+      try {
+        dynamic extraxtData = await Provider.of<Server>(context)
+                                            .getUserData(-1, context);
+
+        _userName = extraxtData['name'];
+        _userPhone = extraxtData['phone'];
+        _isExpert = extraxtData['expert'];
+      } catch (e) {
+        print(e);
+      }
+
+      Provider.of<Server>(context, listen: false)
+          .FetchCategory(items, context)
           .then((_) {
         setState(() {
           _isLoaded = false;

@@ -27,7 +27,7 @@ class Auth with ChangeNotifier {
 
   Future<void> LogIn(String? phone, String? password) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/login');
+      final url = Uri.parse('http://127.0.0.12:8000/api/login');
       var header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer',
@@ -60,7 +60,7 @@ class Auth with ChangeNotifier {
 
   Future<void> SignUp(String? name, String? phone, String? password) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/signup');
+      final url = Uri.parse('http://127.0.0.12:8000/api/signup');
       var header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer',
