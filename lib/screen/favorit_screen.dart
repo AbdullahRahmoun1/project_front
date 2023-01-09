@@ -71,7 +71,6 @@ class _FavoritScreen extends State<FavoritScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text('Your Favorites'),
-          actions: <Widget>[Icon(Icons.favorite)],
         ),
         drawer: Drawer(),
         body: _isLoaded
