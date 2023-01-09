@@ -1,13 +1,11 @@
-import '../modles/specialize.dart';
-import 'dart:convert';
-import '../server/auth.dart';
 import '../widgets/expert_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/experts.dart';
 import '../providers/user.dart';
 import '../widgets/app_drawer.dart';
-import 'package:http/http.dart' as http;
+import '../server/server.dart';
+import '../providers/categories.dart';
 
 class SearchScreen extends StatefulWidget {
   static final routName = '/search-screen';
@@ -19,38 +17,28 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   var _isInit = true;
   var _isLoaded = false;
-  String? _userName;
-  String? _userPhone;
+  bool _isExpert = false;
+  String _userName = '';
+  String _userPhone = '';
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> forDrawer(String? token) async {
+  @override
+  void didChangeDependencies() async {
+    var items = Provider.of<Categories>(context).items;
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/user/-1');
-      Map<String, String> header = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-      final response = await http.get(url, headers: header);
-      final extraxtData = json.decode(response.body) as Map<String, dynamic>;
-      setState(() {
-        _userName = extraxtData['data']['name'];
-        _userPhone = extraxtData['data']['phone'];
-      });
+      dynamic extraxtData =
+      await Provider.of<Server>(context).getUserData(-1, context);
 
-      print(json.decode(response.body));
+      _userName = extraxtData['name'];
+      _userPhone = extraxtData['phone'];
+      _isExpert = extraxtData['isExp'];
     } catch (e) {
       print(e);
     }
-  }
-
-  @override
-  void didChangeDependencies() {
-    var token = Provider.of<Auth>(context).token;
-    forDrawer(token);
     super.didChangeDependencies();
   }
 
@@ -73,10 +61,20 @@ class _SearchScreenState extends State<SearchScreen> {
             )
             .toList();
       }
-      setState(() {
-        dispaly_experts = expertsData.searchItem(value);
+      Provider.of<Server>(context).search("2", ".", context).then((exps){
+        print("surprise !");
+       setState(() {
+         dispaly_experts = exps.items;
+       });
       });
-    }
+    //   setState(()async {
+    //     print("hello brothers");
+    //     Experts some=await Provider.of<Server>(context).search("2", ".", context);
+    //     print(some.items);
+    //     dispaly_experts = some.items;
+    //     });
+
+      }
 
     return Scaffold(
       appBar: AppBar(
@@ -135,6 +133,7 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 class mySearchDelegate extends SearchDelegate {
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -163,13 +162,20 @@ class mySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    var expertsData = Provider.of<Experts>(context);
-    var experts = expertsData.items;
-    final filtterExpert = experts
-        .where((element) =>
-            element.spForSearch.contains(query) ||
-            element.name!.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    // var expertsData = Provider.of<Experts>(context);
+    // var experts = expertsData.items;
+    List<User> filtterExpert =[];
+    Provider.of<Server>(context).search("2", "bwindler", context).then((exps) {
+      filtterExpert=exps.items;
+
+    }
+    );
+    //
+    // final filtterExpert = experts
+    //     .where((element) =>
+    //         element.spForSearch.contains(query) ||
+    //         element.name!.toLowerCase().contains(query.toLowerCase()))
+    //     .toList();
     return ListView.builder(
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: filtterExpert[index],
@@ -177,6 +183,7 @@ class mySearchDelegate extends SearchDelegate {
       ),
       itemCount: filtterExpert.length,
     );
+    // return StatefulBuilder(builder: builder)
   }
 
   @override

@@ -48,7 +48,7 @@ class _HomeSceenState extends State<HomeSceen> {
       }
 
       Provider.of<Server>(context, listen: false)
-          .FetchCategory(items, context)
+          .getHome(items, context)
           .then((_) {
         setState(() {
           _isLoaded = false;
@@ -66,7 +66,7 @@ class _HomeSceenState extends State<HomeSceen> {
     );
     final categories = categoriesData.items;
     final favExperts = Provider.of<Experts>(context);
-    final fav = favExperts.favoriteItems;
+    final fav = favExperts.items;
     Widget getFavorite() {
       if (fav.isEmpty) {
         return Container(
