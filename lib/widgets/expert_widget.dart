@@ -2,6 +2,7 @@ import 'package:consulting_app/providers/user.dart';
 import '../screen/expert_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../server/server.dart';
 
 class ExpertWidget extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _ExpertWidgetState extends State<ExpertWidget> {
             radius: 42,
             child: CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage(expert.imagePath!),
+              backgroundImage: NetworkImage("http://$baseUrl:8000/api/"+expert.imagePath!),
             ),
           ),
           trailing: Column(
