@@ -61,10 +61,20 @@ class _SearchScreenState extends State<SearchScreen> {
             )
             .toList();
       }
-      setState(() {
-        dispaly_experts = expertsData.items;
+      Provider.of<Server>(context).search("2", ".", context).then((exps){
+        print("surprise !");
+       setState(() {
+         dispaly_experts = exps.items;
+       });
       });
-    }
+    //   setState(()async {
+    //     print("hello brothers");
+    //     Experts some=await Provider.of<Server>(context).search("2", ".", context);
+    //     print(some.items);
+    //     dispaly_experts = some.items;
+    //     });
+
+      }
 
     return Scaffold(
       appBar: AppBar(
@@ -123,6 +133,7 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 class mySearchDelegate extends SearchDelegate {
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -151,13 +162,20 @@ class mySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    var expertsData = Provider.of<Experts>(context);
-    var experts = expertsData.items;
-    final filtterExpert = experts
-        .where((element) =>
-            element.spForSearch.contains(query) ||
-            element.name!.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    // var expertsData = Provider.of<Experts>(context);
+    // var experts = expertsData.items;
+    List<User> filtterExpert =[];
+    Provider.of<Server>(context).search("2", "bwindler", context).then((exps) {
+      filtterExpert=exps.items;
+
+    }
+    );
+    //
+    // final filtterExpert = experts
+    //     .where((element) =>
+    //         element.spForSearch.contains(query) ||
+    //         element.name!.toLowerCase().contains(query.toLowerCase()))
+    //     .toList();
     return ListView.builder(
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: filtterExpert[index],
@@ -165,6 +183,7 @@ class mySearchDelegate extends SearchDelegate {
       ),
       itemCount: filtterExpert.length,
     );
+    // return StatefulBuilder(builder: builder)
   }
 
   @override

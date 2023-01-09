@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'server.dart';
@@ -51,9 +52,8 @@ class Auth with ChangeNotifier {
         );
       }
       notifyListeners();
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode({'data': _token});
-      prefs.setString('userData', userData);
+      final storage = new FlutterSecureStorage();
+      await storage.write(key: 'some', value:"hello brothers i hate my life");
     } catch (e) {
       throw e;
     }
