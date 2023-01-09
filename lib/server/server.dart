@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '127.0.0.1';
+final String baseUrl = '10.0.2.2';
 
 class Server with ChangeNotifier {
   String? _getToken(context) {
@@ -49,7 +49,10 @@ class Server with ChangeNotifier {
     return {
       'name': extraxtData['data']['name'],
       'phone': extraxtData['data']['phone'],
-      'isExp': extraxtData['data']['isExp']
+      'isExp': extraxtData['data']['isExp'],
+      'expertise': extraxtData['data']['Expertise'],
+      'money': extraxtData['data']['money'],
+      'totalRate': extraxtData['data']['Total ratings'],
     };
   }
 

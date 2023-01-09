@@ -27,7 +27,7 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
               Container(
-                color: Color.fromRGBO(81, 45, 168, 90),
+                color: Color.fromRGBO(81, 45, 168, 110),
                 width: double.infinity,
                 height: 200,
                 padding: EdgeInsets.only(top: 20),

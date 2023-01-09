@@ -89,6 +89,7 @@ flutter:
     - assets/images/stars.png
     - assets/images/wiht.png
     - assets/images/love.json
+    - assets/images/loading.json
     - assets/images/expert.png
 
   #   - images/a_dot_ham.jpeg

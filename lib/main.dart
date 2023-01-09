@@ -1,3 +1,4 @@
+import 'package:consulting_app/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
 import './providers/experts.dart';
@@ -74,6 +75,7 @@ class _MyAppState extends State<MyApp> {
             ExpertInfoScreen.routName: (context) => ExpertInfoScreen(),
             FavoritScreen.routName: (context) => FavoritScreen(),
             NewExpertScreen.routName: (context) => NewExpertScreen(),
+            ProfileScreen.routName: (context) => ProfileScreen(),
           },
           title: 'Flutter Demo',
         ),

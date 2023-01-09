@@ -1,3 +1,5 @@
+import 'package:consulting_app/screen/profile_screen.dart';
+
 import '../widgets/categories_list.dart';
 import '../providers/categories.dart';
 import '../widgets/home_favorites.dart';
@@ -116,7 +118,9 @@ class _HomeSceenState extends State<HomeSceen> {
               color: Colors.white,
               size: 29,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(ProfileScreen.routName);
+            },
           ),
           _isExpert
               ? IconButton(
@@ -133,7 +137,11 @@ class _HomeSceenState extends State<HomeSceen> {
       drawer: AppDrawer(_userName, _userPhone),
       body: _isLoaded
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Container(
+                width: 300,
+                height: 300,
+                child: Lottie.asset('assets/images/loading.json'),
+              ),
             )
           : ListView(
               children: <Widget>[

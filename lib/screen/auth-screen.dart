@@ -2,6 +2,7 @@ import 'package:consulting_app/modles/http_exception.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../server/auth.dart';
+
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
@@ -117,6 +118,9 @@ class _AuthCardState extends State<AuthCard> {
   Map<String, String> _authData = {'email': '', 'password': '', 'name': ''};
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  var _nameT = TextEditingController();
+  var _phoneT = TextEditingController();
+  var _rePasswordT = TextEditingController();
 
   void _showErrorDilogMessage(String? massage) {
     showDialog(
@@ -178,6 +182,10 @@ class _AuthCardState extends State<AuthCard> {
         _authMode = AuthMode.Login;
       });
     }
+    _nameT.clear();
+    _phoneT.clear();
+    _passwordController.clear();
+    _rePasswordT.clear();
   }
 
   // File? _image;
@@ -207,6 +215,7 @@ class _AuthCardState extends State<AuthCard> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
     return Card(
       margin: EdgeInsets.only(right: 30, left: 30, top: 10, bottom: 10),
       shape: RoundedRectangleBorder(
@@ -231,6 +240,7 @@ class _AuthCardState extends State<AuthCard> {
                     decoration: InputDecoration(labelText: 'Name'),
                     keyboardType: TextInputType.name,
                     textInputAction: TextInputAction.next,
+                    controller: _nameT,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_phone);
                     },
@@ -250,6 +260,7 @@ class _AuthCardState extends State<AuthCard> {
                   decoration: InputDecoration(labelText: 'Phone-Number'),
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                  controller: _phoneT,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 7) {
                       return 'Invalid Phone number!';
@@ -287,6 +298,7 @@ class _AuthCardState extends State<AuthCard> {
                     decoration: InputDecoration(labelText: 'Confirm Password'),
                     textInputAction: TextInputAction.done,
                     obscureText: true,
+                    controller: _rePasswordT,
                     focusNode: _rePassword,
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
@@ -314,43 +326,42 @@ class _AuthCardState extends State<AuthCard> {
                   height: 30,
                 ),
                 TextButton(
-                  child: RichText(
-                    text: _authMode == AuthMode.Login
-                        ? TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'You dont\'t have account? ',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 15),
-                              ),
-                              TextSpan(
-                                text: 'Sign up',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.deepPurple,
-                                    fontSize: 18),
-                              ),
-                            ],
-                          )
-                        : TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'You already has account? ',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 15),
-                              ),
-                              TextSpan(
-                                text: 'Log in',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.deepPurple,
-                                    fontSize: 18),
-                              ),
-                            ],
-                          ),
-                  ),
-                  onPressed: _switchAuthMode,
-                ),
+                    child: RichText(
+                      text: _authMode == AuthMode.Login
+                          ? TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'You dont\'t have account? ',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 15),
+                                ),
+                                TextSpan(
+                                  text: 'Sign up',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.deepPurple,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            )
+                          : TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'You already has account? ',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 15),
+                                ),
+                                TextSpan(
+                                  text: 'Log in',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.deepPurple,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
+                    ),
+                    onPressed: _switchAuthMode),
               ],
             ),
           ),

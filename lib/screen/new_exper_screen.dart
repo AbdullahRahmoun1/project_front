@@ -17,13 +17,17 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
   String? value = 'Choos a category';
   var _priceFocusNode = FocusNode();
   var _disFocusNode = FocusNode();
-  var _adress = FocusNode();
+  var _adressFocusNode = FocusNode();
   var _form = GlobalKey<FormState>();
+  var _price = TextEditingController();
+  var _spec = TextEditingController();
+  var _dis = TextEditingController();
+  var _adress = TextEditingController();
 
   @override
   void dispose() {
     _priceFocusNode.dispose();
-    _adress.dispose();
+    _adressFocusNode.dispose();
     _disFocusNode.dispose();
     super.dispose();
   }
@@ -31,9 +35,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
   @override
   Widget build(BuildContext context) {
     var categories = Provider.of<Categories>(context).items;
-    List<Category> expertCat = [
-      Category(id: '0', color: Colors.red, icon: Icon(Icons.abc), name: 'test')
-    ];
+    List<Category> expertCat = [];
     var selectedValue = categories[0].name;
     var isCorrect = true;
     String? id = '0';
@@ -53,6 +55,11 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
       }
       print(expertInfo);
       _form.currentState!.save();
+
+      _price.clear();
+      _spec.clear();
+      _dis.clear();
+      _adress.clear();
     }
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -179,6 +186,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                             decoration: InputDecoration(
                               labelText: 'Specialze',
                             ),
+                            controller: _spec,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'you forgit that';
@@ -208,6 +216,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                             decoration: InputDecoration(
                               labelText: 'Price',
                             ),
+                            controller: _price,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'we don\'t have a charity';
@@ -250,6 +259,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 decoration: InputDecoration(
                   labelText: 'Discription',
                 ),
+                controller: _dis,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'how can you forgit that';
@@ -262,7 +272,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 textInputAction: TextInputAction.next,
                 focusNode: _disFocusNode,
                 onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_adress);
+                  FocusScope.of(context).requestFocus(_adressFocusNode);
                 },
                 onSaved: (newValue) {
                   expertInfo = {
@@ -281,8 +291,9 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 decoration: InputDecoration(
                   labelText: 'adress',
                 ),
+                controller: _adress,
                 textInputAction: TextInputAction.done,
-                focusNode: _adress,
+                focusNode: _adressFocusNode,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'nice let\'t meet in the street';
@@ -313,9 +324,8 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                     if (isCorrect) {
                       Provider.of<Server>(context, listen: false)
                           .becomeExpert(expertInfo, context);
-
-                      setState(() {
-                        expertCat.add(Category(
+                      expertCat.add(
+                        Category(
                             id: id,
                             color: categories
                                 .firstWhere((element) => element.id == id)
@@ -323,8 +333,8 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                             name: expertInfo['specialization'],
                             icon: categories
                                 .firstWhere((element) => element.id == id)
-                                .icon));
-                      });
+                                .icon),
+                      );
                       print(expertCat[0]);
                       showDialog(
                         context: context,
