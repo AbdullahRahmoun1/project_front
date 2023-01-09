@@ -11,7 +11,7 @@ class Categories with ChangeNotifier {
   List<Category> _items = [
     Category(
       name: 'hi',
-      id: 1,
+      id: '1',
       color: Colors.green,
       icon: Icon(
         Icons.medical_services,
@@ -21,7 +21,7 @@ class Categories with ChangeNotifier {
     ),
     Category(
       name: 'hi',
-      id: 2,
+      id: '2',
       color: Colors.orange,
       icon: Icon(
         Icons.workspace_premium,
@@ -31,7 +31,7 @@ class Categories with ChangeNotifier {
     ),
     Category(
       name: 'hi',
-      id: 3,
+      id: '3',
       color: Colors.blue,
       icon: Icon(
         Icons.business_center,
@@ -41,7 +41,7 @@ class Categories with ChangeNotifier {
     ),
     Category(
       name: 'hi',
-      id: 4,
+      id: '4',
       color: Colors.red,
       icon: Icon(
         Icons.family_restroom,
@@ -51,7 +51,7 @@ class Categories with ChangeNotifier {
     ),
     Category(
       name: 'hi',
-      id: 5,
+      id: '5',
       color: Colors.brown,
       icon: Icon(
         Icons.psychology,

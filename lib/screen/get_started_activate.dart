@@ -43,28 +43,8 @@ class GetStartedActivate extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: Text('You have to pay 500 coins'),
-                        content: Text('are you sure you want to be expert?'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            child: Text('No'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pushReplacementNamed(
-                                  NewExpertScreen.routName);
-                            },
-                            child: Text('Yes'),
-                          ),
-                        ],
-                      ),
-                    );
+                    Navigator.of(context)
+                        .pushReplacementNamed(NewExpertScreen.routName);
                   },
                 ),
                 Icon(

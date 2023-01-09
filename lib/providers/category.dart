@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class Category with ChangeNotifier {
   String? name;
-  int id;
+  String? id;
   Color color;
   Icon icon;
 

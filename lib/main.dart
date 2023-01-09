@@ -7,7 +7,6 @@ import './screen/get_started_activate.dart';
 import './screen/tabs_screen.dart';
 import './screen/auth-screen.dart';
 import './screen/favorit_screen.dart';
-import './screen/splash_screen.dart';
 import './screen/home_screen.dart';
 import 'screen/expert_info_screen.dart';
 import './screen/seach_screen.dart';
@@ -31,7 +30,8 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
-        ),ChangeNotifierProvider.value(
+        ),
+        ChangeNotifierProvider.value(
           value: Server(),
         ),
         ChangeNotifierProvider(

@@ -35,12 +35,12 @@ class _HomeSceenState extends State<HomeSceen> {
       });
       var items = Provider.of<Categories>(context).items;
       try {
-        dynamic extraxtData = await Provider.of<Server>(context)
-                                            .getUserData(-1, context);
+        dynamic extraxtData =
+            await Provider.of<Server>(context).getUserData(-1, context);
 
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];
-        _isExpert = extraxtData['expert'];
+        _isExpert = extraxtData['isExp'];
       } catch (e) {
         print(e);
       }
