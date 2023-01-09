@@ -134,6 +134,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 class mySearchDelegate extends SearchDelegate {
 
+  List<User> filtterExpert =[];
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -141,8 +142,9 @@ class mySearchDelegate extends SearchDelegate {
         onPressed: () {
           if (query.isEmpty) {
             close(context, null);
-          } else
+          } else {
             query = '';
+          }
         },
         icon: Icon(Icons.clear),
       ),
@@ -159,23 +161,15 @@ class mySearchDelegate extends SearchDelegate {
           Icons.arrow_back,
         ));
   }
-
+//..............................................................................
   @override
   Widget buildResults(BuildContext context) {
-    // var expertsData = Provider.of<Experts>(context);
-    // var experts = expertsData.items;
-    List<User> filtterExpert =[];
-    Provider.of<Server>(context).search("2", "bwindler", context).then((exps) {
+    // List<User> filtterExpert =[];
+    Provider.of<Server>(context).search("1", "b", context).then((exps) {
       filtterExpert=exps.items;
-
+      print(filtterExpert);
     }
     );
-    //
-    // final filtterExpert = experts
-    //     .where((element) =>
-    //         element.spForSearch.contains(query) ||
-    //         element.name!.toLowerCase().contains(query.toLowerCase()))
-    //     .toList();
     return ListView.builder(
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: filtterExpert[index],
@@ -185,7 +179,7 @@ class mySearchDelegate extends SearchDelegate {
     );
     // return StatefulBuilder(builder: builder)
   }
-
+//..............................................................................
   @override
   Widget buildSuggestions(BuildContext context) {
     List<String?> sp =

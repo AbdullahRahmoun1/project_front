@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:consulting_app/providers/user.dart';
 import 'package:consulting_app/server/auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,7 @@ class Server with ChangeNotifier {
         Uri.parse('http://$baseUrl:8000/api/specialty/$cat?query=$query');
     final response = await http.get(url, headers: header);
     final JSONresponse = json.decode(response.body);
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 ) {
       throw HttpException(JSONresponse['userMessage']);
     }
 
@@ -134,6 +135,23 @@ class Server with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    return result;
+  }
+  Future<bool> uploadImage(XFile image,context)async {
+    bool result=false;
+    final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
+    var token = await _getToken(context);
+    Map<String, String> header = {
+      'Content-Type': 'multipart/form-data',
+      'Accept-Encoding': 'multipart/form-data',
+      'Authorization': 'Bearer $token',
+    };
+    var request = new http.MultipartRequest("POST", url);
+    request.headers.addAll(header);
+    request.files.add(await http.MultipartFile.fromPath('image',image.path));
+    request.send().then((response) {
+      if (response.statusCode == 200)result=true;
+    });
     return result;
   }
 
