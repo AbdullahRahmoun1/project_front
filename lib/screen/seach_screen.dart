@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: mySearchDelegate(),
+                delegate: _mySearchDelegate(),
               );
             },
             icon: Icon(
@@ -132,7 +132,12 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class mySearchDelegate extends SearchDelegate {
+class mySearchDelegate extends StatefulWidget {
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _mySearchDelegate extends State<mySearchDelegate> with SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
