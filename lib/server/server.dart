@@ -152,7 +152,13 @@ class Server with ChangeNotifier {
     }
     List listOfExps = JSONresponse['data'];
     for (int i = 0; i < listOfExps.length; i++) {
-      exps.addExpert(User(id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name'],isFavorit: true,imagePath: listOfExps[i]['image']));
+      exps.addExpert(User(
+                id: listOfExps[i]['id'].toString(),
+                name: listOfExps[i]['name'],
+                isFavorit: true,
+                imagePath: listOfExps[i]['image'],
+                //specialize:
+                ));
     }
     return exps;
   }
