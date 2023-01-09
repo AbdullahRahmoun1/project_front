@@ -12,11 +12,11 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '127.0.0.1';
+final String baseUrl = '10.0.2.2';
 String token = "";
 
 class Server with ChangeNotifier {
-  Future<String?> _getToken(context) async {
+  Future<String?> getToken(context) async {
     if (token.isEmpty) {
       final storage = new FlutterSecureStorage();
       String? value = await storage.read(key: 'token');
@@ -29,7 +29,7 @@ class Server with ChangeNotifier {
   Future<void> getHome(items, context) async {
     try {
       final url = Uri.parse('http://$baseUrl:8000/api/home');
-      var token = await _getToken(context);
+      var token = await getToken(context);
       Map<String, String> header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -50,7 +50,7 @@ class Server with ChangeNotifier {
 
   Future<Map<String, dynamic>> getUserData(int? id, context) async {
     final url = Uri.parse('http://$baseUrl:8000/api/user/-1');
-    var token = await _getToken(context);
+    var token = await getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -69,7 +69,7 @@ class Server with ChangeNotifier {
 
   Future<void> becomeExpert(
       Map<String?, dynamic> body, BuildContext context) async {
-    var token = await _getToken(context);
+    var token = await getToken(context);
     var url = Uri.parse('http://$baseUrl:8000/api/expert');
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ class Server with ChangeNotifier {
 
   Future<Experts> search(String cat, String query, context) async {
     Experts exps = Experts();
-    var token = await _getToken(context);
+    var token = await getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -113,7 +113,7 @@ class Server with ChangeNotifier {
 
   Future<bool> manageLove(String expertId, bool love, context) async {
     bool result = false;
-    var token = await _getToken(context);
+    var token = await getToken(context);
     var url = Uri.parse('http://$baseUrl:8000/api/favorite');
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ class Server with ChangeNotifier {
 
   Future<Experts> getAllFavorite(context) async {
     Experts exps = Experts();
-    var token = await _getToken(context);
+    var token = await getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
