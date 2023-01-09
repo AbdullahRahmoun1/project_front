@@ -81,12 +81,13 @@ class Auth with ChangeNotifier {
       final responData = json.decode(respon.body);
       _token = responData['data'];
       final storage = new FlutterSecureStorage();
-      await storage.write(key: 'token', value:_token);
+      await storage.write(key: 'token', value: _token);
       if (respon.statusCode != 200) {
         throw HttpException(
           responData['message'],
         );
       }
+
       notifyListeners();
     } catch (e) {
       throw e;

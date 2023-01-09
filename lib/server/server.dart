@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '127.0.0.1';
+final String baseUrl = '10.0.2.2';
 String token = "";
 
 class Server with ChangeNotifier {
@@ -96,7 +96,7 @@ class Server with ChangeNotifier {
         Uri.parse('http://$baseUrl:8000/api/specialty/$cat?query=$query');
     final response = await http.get(url, headers: header);
     final JSONresponse = json.decode(response.body);
-    if (response.statusCode != 200 ) {
+    if (response.statusCode != 200) {
       throw HttpException(JSONresponse['userMessage']);
     }
 
@@ -133,8 +133,9 @@ class Server with ChangeNotifier {
     }
     return result;
   }
-  Future<bool> uploadImage(XFile image,context)async {
-    bool result=false;
+
+  Future<bool> uploadImage(XFile image, context) async {
+    bool result = false;
     final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
     var token = await getToken(context);
     Map<String, String> header = {
@@ -144,9 +145,9 @@ class Server with ChangeNotifier {
     };
     var request = new http.MultipartRequest("POST", url);
     request.headers.addAll(header);
-    request.files.add(await http.MultipartFile.fromPath('image',image.path));
+    request.files.add(await http.MultipartFile.fromPath('image', image.path));
     request.send().then((response) {
-      if (response.statusCode == 200)result=true;
+      if (response.statusCode == 200) result = true;
     });
     return result;
   }
@@ -175,7 +176,7 @@ class Server with ChangeNotifier {
         name: listOfExps[i]['name'],
         isFavorit: true,
         imagePath: listOfExps[i]['image'],
-        specialize: listOfExps[i]['specializations']
+        //specialize:
       ));
     }
     return exps;
