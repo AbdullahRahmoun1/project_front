@@ -53,7 +53,7 @@ class Auth with ChangeNotifier {
       }
       notifyListeners();
       final storage = new FlutterSecureStorage();
-      await storage.write(key: 'some', value:"hello brothers i hate my life");
+      await storage.write(key: 'token', value:_token);
     } catch (e) {
       throw e;
     }
