@@ -64,7 +64,7 @@ class _HomeSceenState extends State<HomeSceen> {
     );
     final categories = categoriesData.items;
     final favExperts = Provider.of<Experts>(context);
-    final fav = favExperts.favoriteItems;
+    final fav = favExperts.items;
     Widget getFavorite() {
       if (fav.isEmpty) {
         return Container(

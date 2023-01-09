@@ -29,7 +29,7 @@ class _RatingState extends State<Rating> {
               )),
           onRatingUpdate: (rating) => setState(() {
             _Rating = rating; 
-            experts.changeRate(ExpertId, rating);
+            //experts.changeRate(ExpertId, rating);
           }),
         );
 

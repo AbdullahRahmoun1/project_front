@@ -1,6 +1,8 @@
+import 'package:consulting_app/server/server.dart';
 import 'package:flutter/material.dart';
 import '../widgets/expert_widget.dart';
 import 'package:provider/provider.dart';
+import '../providers/user.dart';
 import '../providers/experts.dart';
 
 class FavoritScreen extends StatelessWidget {
@@ -10,8 +12,14 @@ class FavoritScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favExperts = Provider.of<Experts>(context);
-    final fav = favExperts.favoriteItems;
+     Experts favExperts=Experts();
+     List<User> fav = favExperts.items;
+     Provider.of<Server>(context).getAllFavorite(context).then(
+         (exps){
+           favExperts=exps;
+           fav = favExperts.items;
+         }
+     );
     if (fav.isEmpty) {
       return Scaffold(
         appBar: AppBar(

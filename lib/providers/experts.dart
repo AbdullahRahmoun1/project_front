@@ -73,24 +73,12 @@ class Experts with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  List<User> get favoriteItems {
-    return _items.where((element) => element.isFavorit).toList();
-  }
-
   List<User> get items {
     return [..._items];
   }
 
-  List<User> searchItem(String? name) {
-    return _items.where((element) => element.name == name).toList();
-  }
-
-  void changeRate(String id, double? Newrate) {
-    _items.firstWhere((element) => element.id == id).rate = Newrate;
-    notifyListeners();
-  }
-
-  void addExpert() {
+  void addExpert(User user) {
+    _items.add(user);
     notifyListeners();
   }
 
