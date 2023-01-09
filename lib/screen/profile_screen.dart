@@ -21,9 +21,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _userPrice = '';
   var _idSp = '';
   String _userAdress = '';
-  String _price = '';
-  String _totalRate = '';
-  String _creditCard = '';
+  dynamic _price;
+  dynamic _totalRate;
+  dynamic _creditCard;
   List<dynamic> _spec = [];
   dynamic currentIndex;
   var _selectedValue;
@@ -204,7 +204,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               onPressed: () {},
                             ),
-                            Text(_creditCard),
+                            Text(
+                              '${_creditCard.toString()}\$',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 113, 113, 113),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -219,8 +226,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               size: 35,
                             ),
                             Text(
-                              _totalRate,
-                              style: TextStyle(color: Colors.deepPurple),
+                              _totalRate.toString(),
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 113, 113, 113),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ],
                         ),
@@ -235,7 +246,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.grey,
                               size: 35,
                             ),
-                            Text(_price),
+                            Text(
+                              '${_price.toString()}\$',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 113, 113, 113),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ],
                         ),
                       ),
