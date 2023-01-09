@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'server.dart';
 
 class Auth with ChangeNotifier {
   bool isLogedIn = false;
@@ -27,7 +28,7 @@ class Auth with ChangeNotifier {
 
   Future<void> LogIn(String? phone, String? password) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/login');
+      final url = Uri.parse('http://$baseUrl:8000/api/login');
       var header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer',
@@ -40,7 +41,7 @@ class Auth with ChangeNotifier {
         body: json.encode(body),
       );
       print(json.decode(respon.body));
-      print('respon');
+      print('response');
       print(respon.statusCode);
       final responData = json.decode(respon.body);
       _token = responData['data'];
@@ -60,7 +61,7 @@ class Auth with ChangeNotifier {
 
   Future<void> SignUp(String? name, String? phone, String? password) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/api/signup');
+      final url = Uri.parse('http://$baseUrl:8000/api/signup');
       var header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer',
