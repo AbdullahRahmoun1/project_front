@@ -90,17 +90,18 @@ class Server with ChangeNotifier {
     final url = Uri.parse('http://$baseUrl:8000/api/favorite');
     final response = await http.get(url, headers: header);
     final JSONresponse = json.decode(response.body);
-
+    print("getFavs");
     if (response.statusCode != 200) {
+      print("Error in getFavs");
       throw HttpException(JSONresponse['userMessage']);
     }
 
-    List listOfExps = JSONresponse['data'];
-
+    List listOfExps = JSONresponse['data']['data'];
     for (int i = 0; i < listOfExps.length; i++) {
-      exps.items[i] =
-          User(id: listOfExps[i]['id'], name: listOfExps[i]['name']);
+      exps.addExpert(User(id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
     }
+
+    print(exps.items);
     return exps;
   }
 }
