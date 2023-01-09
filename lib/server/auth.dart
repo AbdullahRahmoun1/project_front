@@ -87,8 +87,6 @@ class Auth with ChangeNotifier {
           responData['message'],
         );
       }
-      final storage = new FlutterSecureStorage();
-      await storage.write(key: 'token', value: _token);
       notifyListeners();
     } catch (e) {
       throw e;

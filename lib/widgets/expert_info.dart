@@ -63,7 +63,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
             onChanged: (value) {
               setState(() {
                 //_selectedValue = value!;
-                changeSpId(value);
+                changeSpId(value.toString());
               });
             },
           ),

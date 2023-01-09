@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
     var items = Provider.of<Categories>(context).items;
     try {
       dynamic extraxtData =
-      await Provider.of<Server>(context).getUserData(-1, context);
+          await Provider.of<Server>(context).getUserData(-1, context);
 
       _userName = extraxtData['name'];
       _userPhone = extraxtData['phone'];
@@ -61,20 +61,19 @@ class _SearchScreenState extends State<SearchScreen> {
             )
             .toList();
       }
-      Provider.of<Server>(context).search("2", ".", context).then((exps){
+      Provider.of<Server>(context).search("2", ".", context).then((exps) {
         print("surprise !");
-       setState(() {
-         dispaly_experts = exps.items;
-       });
+        setState(() {
+          dispaly_experts = exps.items;
+        });
       });
-    //   setState(()async {
-    //     print("hello brothers");
-    //     Experts some=await Provider.of<Server>(context).search("2", ".", context);
-    //     print(some.items);
-    //     dispaly_experts = some.items;
-    //     });
-
-      }
+      //   setState(()async {
+      //     print("hello brothers");
+      //     Experts some=await Provider.of<Server>(context).search("2", ".", context);
+      //     print(some.items);
+      //     dispaly_experts = some.items;
+      //     });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: _mySearchDelegate(),
+                delegate: mySearchDelegate(),
               );
             },
             icon: Icon(
@@ -131,15 +130,10 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-
-class mySearchDelegate extends StatefulWidget {
-  @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _mySearchDelegate extends State<mySearchDelegate> with SearchDelegate {
+class mySearchDelegate extends SearchDelegate {
 
   List<User> filtterExpert =[];
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -166,15 +160,19 @@ class _mySearchDelegate extends State<mySearchDelegate> with SearchDelegate {
           Icons.arrow_back,
         ));
   }
-//..............................................................................
   @override
   Widget buildResults(BuildContext context) {
-    // List<User> filtterExpert =[];
+     List<User> filtterExpert =[];
     Provider.of<Server>(context).search("1", "b", context).then((exps) {
       filtterExpert=exps.items;
       print(filtterExpert);
     }
     );
+    Provider.of<Server>(context)
+            .search("2", "bwindler", context)
+            .then((exps) {
+              filtterExpert = exps.items;
+              });
     return ListView.builder(
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: filtterExpert[index],
@@ -184,7 +182,6 @@ class _mySearchDelegate extends State<mySearchDelegate> with SearchDelegate {
     );
     // return StatefulBuilder(builder: builder)
   }
-//..............................................................................
   @override
   Widget buildSuggestions(BuildContext context) {
     List<String?> sp =

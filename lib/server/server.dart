@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '10.0.2.2';
+final String baseUrl = '127.0.0.1';
 String token = "";
 
 class Server with ChangeNotifier {
@@ -136,7 +136,7 @@ class Server with ChangeNotifier {
   Future<bool> uploadImage(XFile image,context)async {
     bool result=false;
     final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
-    var token = await _getToken(context);
+    var token = await getToken(context);
     Map<String, String> header = {
       'Content-Type': 'multipart/form-data',
       'Accept-Encoding': 'multipart/form-data',
@@ -175,7 +175,7 @@ class Server with ChangeNotifier {
         name: listOfExps[i]['name'],
         isFavorit: true,
         imagePath: listOfExps[i]['image'],
-        //specialize:
+        specialize: listOfExps[i]['specializations']
       ));
     }
     return exps;
