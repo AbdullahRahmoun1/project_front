@@ -46,7 +46,7 @@ class _HomeSceenState extends State<HomeSceen> {
       }
 
       Provider.of<Server>(context, listen: false)
-          .FetchCategory(items, context)
+          .getHome(items, context)
           .then((_) {
         setState(() {
           _isLoaded = false;

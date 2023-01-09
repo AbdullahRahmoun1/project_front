@@ -16,7 +16,7 @@ class Server with ChangeNotifier {
     return Provider.of<Auth>(context, listen: false).token;
   }
 
-  Future<void> FetchCategory(items, context) async {
+  Future<void> getHome(items, context) async {
     try {
       final url = Uri.parse('http://$baseUrl:8000/api/home');
       var token = _getToken(context);
@@ -108,7 +108,9 @@ class Server with ChangeNotifier {
     final url = Uri.parse('http://$baseUrl:8000/api/favorite');
     final response = await http.get(url, headers: header);
     final JSONresponse = json.decode(response.body);
+
     print("getFavs");
+
     if (response.statusCode != 200) {
       print("Error in getFavs");
       throw HttpException(JSONresponse['userMessage']);
@@ -118,8 +120,6 @@ class Server with ChangeNotifier {
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
     }
-
-    print(exps.items);
     return exps;
   }
 }
