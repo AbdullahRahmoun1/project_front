@@ -51,7 +51,6 @@ class Server with ChangeNotifier {
   Future<Map<String, dynamic>> getUserData(int? id, context) async {
     final url = Uri.parse('http://$baseUrl:8000/api/user/-1');
     var token = await _getToken(context);
-    var token = await _getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -67,7 +66,6 @@ class Server with ChangeNotifier {
 
   Future<void> becomeExpert(
       Map<String?, dynamic> body, BuildContext context) async {
-    var token = await _getToken(context);
     var token = await _getToken(context);
     var url = Uri.parse('http://$baseUrl:8000/api/expert');
     Map<String, String> header = {
@@ -138,7 +136,6 @@ class Server with ChangeNotifier {
   Future<Experts> getAllFavorite(context) async {
     Experts exps = Experts();
     var token = await _getToken(context);
-    var token = await _getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -153,8 +150,6 @@ class Server with ChangeNotifier {
       print("Error in getFavs");
       throw HttpException(JSONresponse['userMessage']);
     }
-
-    List listOfExps = JSONresponse['data'];
     List listOfExps = JSONresponse['data'];
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name'],isFavorit: true,imagePath: listOfExps[i]['image']));
