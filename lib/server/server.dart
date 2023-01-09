@@ -74,14 +74,32 @@ class Server with ChangeNotifier {
     }
   }
 
-  Future<List<Experts>> search(String cat, String query, context) async {
-    List<Experts> exps = [];
+  Future<Experts> search(String cat, String query, context) async {
+    Experts exps = Experts();
+    var token = _getToken(context);
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    final url = Uri.parse('http://$baseUrl:8000/api/specialty/$cat?query=$query');
+    final response = await http.get(url, headers: header);
+    final JSONresponse = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      throw HttpException(JSONresponse['userMessage']);
+    }
+
+    List listOfExps = JSONresponse['data'];
+
+    for (int i = 0; i < listOfExps.length; i++) {
+      exps.items[i] =
+          User(id: listOfExps[i]['id'], name: listOfExps[i]['name']);
+    }
     return exps;
   }
 
   Future<Experts> getAllFavorite(context) async {
     Experts exps = Experts();
-
     var token = _getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
