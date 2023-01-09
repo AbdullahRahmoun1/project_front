@@ -13,6 +13,8 @@ class Auth with ChangeNotifier {
   void storeToken({String? token}) {}
 
   bool get isAuth {
+    // final storage = new FlutterSecureStorage();
+    // var check = storage.read(key: 'token');
     return token != null;
   }
 
@@ -50,9 +52,10 @@ class Auth with ChangeNotifier {
           responData['message'],
         );
       }
-      notifyListeners();
+
       final storage = new FlutterSecureStorage();
-      await storage.write(key: 'token', value:_token);
+      await storage.write(key: 'token', value: _token);
+      notifyListeners();
     } catch (e) {
       throw e;
     }
@@ -82,6 +85,8 @@ class Auth with ChangeNotifier {
           responData['message'],
         );
       }
+      final storage = new FlutterSecureStorage();
+      await storage.write(key: 'token', value: _token);
       notifyListeners();
     } catch (e) {
       throw e;

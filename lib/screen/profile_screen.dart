@@ -167,6 +167,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
+                    Positioned(
+                      top: 7,
+                      right: 20,
+                      child: IconButton(
+                          icon: (Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 25,
+                          )),
+                          onPressed: () {}),
+                    ),
                   ],
                 ),
                 Container(

@@ -59,13 +59,18 @@ class AppDrawer extends StatelessWidget {
                     ),
                     Text(
                       userName!,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       userPhone!,
                       style: TextStyle(
                         color: Colors.deepPurple[200],
                         fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
