@@ -1,10 +1,8 @@
-import 'package:consulting_app/server/server.dart';
 import 'package:flutter/material.dart';
 import '../widgets/raiting.dart';
 import '../widgets/expert_info.dart';
 import 'package:provider/provider.dart';
-import '../providers/user.dart';
-import '../providers/experts.dart';
+import '../server/server.dart';
 
 class ExpertInfoScreen extends StatefulWidget {
   static final routName = '/expert-info';
@@ -25,12 +23,14 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
   @override
   void didChangeDependencies() async {
     ExpertId = ModalRoute.of(context)?.settings.arguments as String?;
-    Provider.of<Server>(context).getUserData(ExpertId, context).then((exp) => {
-          setState(() {
-            _isLoading = true;
-            selectedExpert = exp;
-            _isLoading = false;
-          })
+    srvr
+            .getUserData(ExpertId, context)
+            .then((exp) => {
+              setState(() {
+                _isLoading = true;
+                selectedExpert = exp;
+                _isLoading = false;
+              })
         });
     super.didChangeDependencies();
   }
@@ -143,8 +143,8 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                             size: 30,
                           )),
                           onPressed: () => setState(() {
-                            Provider.of<Server>(context)
-                                .manageLove(ExpertId.toString(), context);
+                            //Provider.of<Server>(context)
+                            //    .manageLove(ExpertId.toString(), context);
                           }),
                         )),
                   ],

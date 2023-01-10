@@ -23,7 +23,7 @@ class _FavoritScreen extends State<FavoritScreen> {
 
   @override
   void didChangeDependencies() {
-    Provider.of<Server>(context)
+    srvr
         .getAllFavorite(context)
         .then((exps) {
               setState(() {

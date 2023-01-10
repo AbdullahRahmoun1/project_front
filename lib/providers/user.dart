@@ -8,7 +8,7 @@ class User with ChangeNotifier {
   String? name;
   String? imagePath;
   List<String> category;
-  List<String> spForSearch;
+  List<dynamic> spForSearch;
   List<dynamic> specialize;
   bool isExpert;
   bool canEdit;

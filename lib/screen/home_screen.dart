@@ -38,8 +38,8 @@ class _HomeSceenState extends State<HomeSceen> {
       var items = Provider.of<Categories>(context).items;
       try {
         dynamic extraxtData =
-            await Provider.of<Server>(context).getUserData('-1', context);
-
+        srvr
+            .getUserData('-1', context);
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];
         _isExpert = extraxtData['isExp'];
@@ -47,7 +47,7 @@ class _HomeSceenState extends State<HomeSceen> {
         print(e);
       }
 
-      Provider.of<Server>(context, listen: false)
+      srvr
           .getHome(items, context)
           .then((_) {
         setState(() {
