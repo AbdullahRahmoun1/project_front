@@ -66,7 +66,6 @@ class srvr {
           asd[i]['address'],
           asd[i]['price'].toString()));
     }
-
     return {
       'name': extraxtData['data']['name'],
       'phone': extraxtData['data']['phone'],
@@ -118,7 +117,7 @@ class srvr {
     List listOfExps = JSONresponse['data'];
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(
-          id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
+          id: listOfExps[i]['user_id'].toString(), name: listOfExps[i]['name']));
     }
     print(exps.items);
     if (exps.items.length == 0) {
@@ -161,6 +160,7 @@ class srvr {
       var response =
           await http.post(url, headers: header, body: json.encode(body));
 
+      print("fafa");
       if (response.statusCode == 200) result = true;
     } catch (e) {
       print(e);
