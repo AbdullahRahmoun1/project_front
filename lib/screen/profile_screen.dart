@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/raiting.dart';
-import '../widgets/expert_info.dart';
 import 'package:provider/provider.dart';
-import '../providers/experts.dart';
 import '../server/server.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -41,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       try {
         dynamic extraxtData =
-            await Provider.of<Server>(context).getUserData(-1, context);
+            await Provider.of<Server>(context).getUserData('-1', context);
         _spec = extraxtData['expertise'];
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];

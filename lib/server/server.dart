@@ -45,8 +45,8 @@ class Server with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> getUserData(int? id, context) async {
-    final url = Uri.parse('http://$baseUrl:8000/api/user/-1');
+  Future<Map<String, dynamic>> getUserData(String? id, context) async {
+    final url = Uri.parse('http://$baseUrl:8000/api/user/$id');
     var token = await getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -58,6 +58,8 @@ class Server with ChangeNotifier {
       'name': extraxtData['data']['name'],
       'phone': extraxtData['data']['phone'],
       'isExp': extraxtData['data']['isExp'],
+      'isFav': extraxtData['data']['isFav'],
+      'image': extraxtData['data']['image'],
       'expertise': extraxtData['data']['Expertise'],
       'money': extraxtData['data']['money'],
       'totalRate': extraxtData['data']['Total ratings'],
@@ -108,7 +110,7 @@ class Server with ChangeNotifier {
     return exps;
   }
 
-  Future<bool> manageLove(String expertId, bool love, context) async {
+  Future<bool> manageLove(String expertId, context) async {
     bool result = false;
     var token = await getToken(context);
     var url = Uri.parse('http://$baseUrl:8000/api/favorite');
@@ -119,14 +121,8 @@ class Server with ChangeNotifier {
     };
     var body = {'expert_id': expertId};
     try {
-      var response;
-      if (love) {
-        response =
-            await http.post(url, headers: header, body: json.encode(body));
-      } else {
-        response =
-            await http.delete(url, headers: header, body: json.encode(body));
-      }
+      var response = await http.post(url, headers: header, body: json.encode(body));
+
       if (response.statusCode == 200) result = true;
     } catch (e) {
       print(e);
@@ -172,12 +168,11 @@ class Server with ChangeNotifier {
     List listOfExps = JSONresponse['data'];
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(
-        id: listOfExps[i]['id'].toString(),
-        name: listOfExps[i]['name'],
-        isFavorit: true,
-        imagePath: listOfExps[i]['image'],
-        //specialize:
-      ));
+          id: listOfExps[i]['id'].toString(),
+          name: listOfExps[i]['name'],
+          isFavorit: true,
+          imagePath: listOfExps[i]['image'],
+          specialize: listOfExps[i]['specializations']));
     }
     return exps;
   }
