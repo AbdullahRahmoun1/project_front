@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../widgets/raiting.dart';
 import '../widgets/expert_info.dart';
 import 'package:provider/provider.dart';
@@ -148,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             radius: 72,
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('assets/images/kaiba.png'),
+                              AssetImage('assets/images/kaiba.png'),
                               backgroundColor: Colors.white,
                               radius: 70,
                             ),
@@ -176,7 +177,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.white,
                             size: 25,
                           )),
-                          onPressed: () {}),
+                          onPressed: () {
+                            final ImagePicker _picker = ImagePicker();
+                            XFile? image ;
+                            _picker.pickImage(source: ImageSource.gallery).then((value) {
+                              image=value;
+                              print('-----------------------------------------------------------------------');
+                              print(image?.path);
+                              print('-----------------------------------------------------------------------');
+
+                            } );
+
+                          }),
                     ),
                   ],
                 ),
