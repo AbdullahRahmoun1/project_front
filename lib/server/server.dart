@@ -107,6 +107,8 @@ class Server with ChangeNotifier {
       exps.addExpert(User(
           id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
     }
+    print(exps.items);
+    if(exps.items.length==0){throw Exception();}
     return exps;
   }
 

@@ -161,25 +161,66 @@ class mySearchDelegate extends SearchDelegate {
         ));
   }
   @override
-  Widget buildResults(BuildContext context) {
-     List<User> filtterExpert =[];
-    Provider.of<Server>(context).search("1", "b", context).then((exps) {
-      filtterExpert=exps.items;
-      print(filtterExpert);
-    }
-    );
-    Provider.of<Server>(context)
-            .search("2", "bwindler", context)
-            .then((exps) {
-              filtterExpert = exps.items;
-              });
-    return ListView.builder(
-      itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: filtterExpert[index],
-        child: ExpertWidget(),
-      ),
-      itemCount: filtterExpert.length,
-    );
+  Widget buildResults(BuildContext context){
+    return FutureBuilder(future:Provider.of<Server>(context).search("-1", query, context)
+        ,builder: (context, AsyncSnapshot<Experts> snapshot) {
+          if(snapshot.hasData){
+            filtterExpert=snapshot.data!.items;
+            print('-_______________________-');
+            print(snapshot.data?.items);
+            print('********');
+            print(filtterExpert);
+            return ListView.builder(
+              itemBuilder: (context, index) => ChangeNotifierProvider.value(
+                value: filtterExpert[index],
+                child: ExpertWidget(),
+              ),
+              itemCount: filtterExpert.length,
+            );
+            return Text(snapshot.data.toString());
+          }else if(snapshot.hasError){
+            return Center(child: Text("No items Found"));
+          }else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //
+    //  List<User> filtterExpert =[];
+    // Provider.of<Server>(context).search("1", "b", context).then((exps) {
+    //   filtterExpert=exps.items;
+    //
+    //   print(filtterExpert);
+    // }
+    // );
+    // Provider.of<Server>(context)
+    //         .search("2", "bwindler", context)
+    //         .then((exps) {
+    //           filtterExpert = exps.items;
+    //           });
+    // return ListView.builder(
+    //   itemBuilder: (context, index) => ChangeNotifierProvider.value(
+    //     value: filtterExpert[index],
+    //     child: ExpertWidget(),
+    //   ),
+    //   itemCount: filtterExpert.length,
+    // );
     // return StatefulBuilder(builder: builder)
   }
   @override
