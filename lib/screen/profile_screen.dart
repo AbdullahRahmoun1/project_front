@@ -14,6 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoaded = false;
   String _userName = '';
   String _userPhone = '';
+  String _userImage = '';
   String _userDis = '';
   String _userPrice = '';
   var _idSp = '';
@@ -41,7 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             await Provider.of<Server>(context).getUserData('-1', context);
         _spec = extraxtData['expertise'];
         _userName = extraxtData['name'];
+        _userName = extraxtData['image'];
         _userPhone = extraxtData['phone'];
+        _userImage = extraxtData['image'];
         _creditCard = extraxtData['money'];
         _totalRate = extraxtData['totalRate'];
         _price = _spec[0]['price'];
@@ -145,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             radius: 72,
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('assets/images/kaiba.png'),
+                                  NetworkImage("http://$baseUrl:8000/api/"+_userImage),
                               backgroundColor: Colors.white,
                               radius: 70,
                             ),
