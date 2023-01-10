@@ -23,8 +23,9 @@ class srvr {
     return token;
   }
 
-  static Future<void> getHome(items, context) async {
+  static Future<Map<String,dynamic>> getHome(items, context) async {
     try {
+      var result={'statusCode':400};
       final url = Uri.parse('http://$baseUrl:8000/api/home');
       var token = await getToken(context);
       Map<String, String> header = {
@@ -32,17 +33,16 @@ class srvr {
         'Authorization': 'Bearer $token',
       };
       final response = await http.get(url, headers: header);
-
       final extractData =
           json.decode(response.body) as LinkedHashMap<String, dynamic>;
       for (var i = 0; i < items.length; i++) {
         items[i].name = extractData['data']['Specialities'][i]['specialtyName'];
       }
-      print(response.statusCode);
-      print(json.decode(response.body));
+      return extractData;
     } catch (e) {
       print(e);
     }
+    return {'msg':'failed'};
   }
 
   static Future<Map<String, dynamic>> getUserData(String? id, context) async {
@@ -196,5 +196,19 @@ class srvr {
           spForSearch: listOfExps[i]['specializations']));
     }
     return exps;
+  }
+
+  static Future<bool> addTime(BuildContext context, expertId,times) async{
+    bool result=false;
+    var token = await getToken(context);
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    final url = Uri.parse('http://$baseUrl:8000/api/time');
+    final response = await http.post(url, headers: header,body: json.encode(times));
+    if(response.statusCode==200)result=true;
+    print(response.body);
+    return result;
   }
 }

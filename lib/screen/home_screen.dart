@@ -23,6 +23,7 @@ class _HomeSceenState extends State<HomeSceen> {
   bool _isExpert = false;
   String _userName = '';
   String _userPhone = '';
+  var fav=[];
 
   @override
   void initState() {
@@ -49,9 +50,10 @@ class _HomeSceenState extends State<HomeSceen> {
 
       srvr
           .getHome(items, context)
-          .then((_) {
-        setState(() {
-          _isLoaded = false;
+          .then((data) {
+            setState(() {
+              fav=data['fav'];
+              _isLoaded = false;
         });
       });
     }
@@ -65,8 +67,6 @@ class _HomeSceenState extends State<HomeSceen> {
       context,
     );
     final categories = categoriesData.items;
-    final favExperts = Provider.of<Experts>(context);
-    final fav = favExperts.items;
     Widget getFavorite() {
       if (fav.isEmpty) {
         return Container(

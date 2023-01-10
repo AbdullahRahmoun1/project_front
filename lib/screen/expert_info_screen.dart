@@ -143,8 +143,8 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                             size: 30,
                           )),
                           onPressed: () => setState(() {
-                            //Provider.of<Server>(context)
-                            //    .manageLove(ExpertId.toString(), context);
+                                srvr.manageLove(ExpertId.toString(), context);
+                                selectedExpert?['isFav']=!selectedExpert?['isFav'];
                           }),
                         )),
                   ],
