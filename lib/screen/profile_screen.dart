@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       try {
         dynamic extraxtData =
-            await Provider.of<Server>(context).getUserData('-1', context);
+        Provider.of<Server>(context).getUserData('-1', context);
         _spec = extraxtData['expertise'];
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];

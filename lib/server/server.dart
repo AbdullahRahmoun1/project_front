@@ -1,3 +1,4 @@
+import 'package:consulting_app/modles/specialize.dart';
 import 'package:consulting_app/providers/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -54,13 +55,19 @@ class Server with ChangeNotifier {
     };
     final response = await http.get(url, headers: header);
     final extraxtData = json.decode(response.body) as Map<String, dynamic>;
+    List asd=extraxtData['data']['Expertise'];
+    List<Specialize> dsa=[];
+    for (int i=0;i<asd.length;i++){
+      dsa.add(Specialize(asd[i]['id'].toString(), asd[i]['specialization'], asd[i]['description'], extraxtData['data']['phone'], asd[i]['address']));
+    }
+
     return {
       'name': extraxtData['data']['name'],
       'phone': extraxtData['data']['phone'],
       'isExp': extraxtData['data']['isExp'],
       'isFav': extraxtData['data']['isFav'],
       'image': extraxtData['data']['image'],
-      'expertise': extraxtData['data']['Expertise'],
+      'specialize': dsa,
       'money': extraxtData['data']['money'],
       'totalRate': extraxtData['data']['Total ratings'],
     };
@@ -123,7 +130,8 @@ class Server with ChangeNotifier {
     };
     var body = {'expert_id': expertId};
     try {
-      var response = await http.post(url, headers: header, body: json.encode(body));
+      var response =
+          await http.post(url, headers: header, body: json.encode(body));
 
       if (response.statusCode == 200) result = true;
     } catch (e) {
@@ -179,12 +187,14 @@ class Server with ChangeNotifier {
     }
     List listOfExps = JSONresponse['data'];
     for (int i = 0; i < listOfExps.length; i++) {
+    print(listOfExps[i]['specializations']);
       exps.addExpert(User(
           id: listOfExps[i]['id'].toString(),
           name: listOfExps[i]['name'],
           isFavorit: true,
           imagePath: listOfExps[i]['image'],
-          specialize: listOfExps[i]['specializations']));
+          spForSearch: listOfExps[i]['specializations']
+      ));
     }
     return exps;
   }

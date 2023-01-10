@@ -16,8 +16,8 @@ class _ExpertWidgetState extends State<ExpertWidget> {
 
     String getSubtitle() {
       if (expert.specialize.length > 2) {
-        var e1 = expert.spForSearch[0];
-        var e2 = expert.spForSearch[1];
+        var e1 = expert.spForSearch[0].toString();
+        var e2 = expert.spForSearch[1].toString();
         return '$e1  $e2 ...';
       }
 

@@ -629,6 +629,38 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                     checkWrong();
                     if (isCorrect) {
                       startAddDate(context);
+                      if (_isDone) {
+                        _saveForm();
+                        Provider.of<Server>(context)
+                            .becomeExpert(expertInfo, context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Row(
+                              children: <Widget>[
+                                Text('Congratulations'),
+                                SizedBox(
+                                  width: 14,
+                                ),
+                                Icon(
+                                  Icons.auto_awesome,
+                                  color: Colors.amber,
+                                ),
+                              ],
+                            ),
+                            content: Text(
+                                'You became ${categories.firstWhere((element) => element.id == id).name} expert successfully'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Ok'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Text(

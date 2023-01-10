@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
     var items = Provider.of<Categories>(context).items;
     try {
       dynamic extraxtData =
-          await Provider.of<Server>(context).getUserData('-1', context);
+      await Provider.of<Server>(context).getUserData('-1', context);
 
       _userName = extraxtData['name'];
       _userPhone = extraxtData['phone'];
@@ -221,6 +221,25 @@ class mySearchDelegate extends SearchDelegate {
     //   ),
     //   itemCount: filtterExpert.length,
     // );
+  Widget buildResults(BuildContext context) {
+     List<User> filtterExpert =[];
+     Provider.of<Server>(context).search("1", "b", context).then((exps) {
+      filtterExpert=exps.items;
+      print(filtterExpert);
+    }
+    );
+     Provider.of<Server>(context)
+            .search("2", "bwindler", context)
+            .then((exps) {
+              filtterExpert = exps.items;
+              });
+    return ListView.builder(
+      itemBuilder: (context, index) => ChangeNotifierProvider.value(
+        value: filtterExpert[index],
+        child: ExpertWidget(),
+      ),
+      itemCount: filtterExpert.length,
+    );
     // return StatefulBuilder(builder: builder)
   }
   @override
