@@ -179,29 +179,29 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  //This container for rating
-                  margin: const EdgeInsets.only(
-                      top: 10, right: 15, left: 15, bottom: 10),
-                  padding: EdgeInsets.all(20),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-
-                  child: Rating(),
-                ),
+                // Container(
+                //   //This container for rating
+                //   margin: const EdgeInsets.only(
+                //       top: 10, right: 15, left: 15, bottom: 10),
+                //   padding: EdgeInsets.all(20),
+                //   width: double.infinity,
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(15),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color:
+                //             const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                //         spreadRadius: 2,
+                //         blurRadius: 5,
+                //         offset:
+                //             const Offset(0, 3), // changes position of shadow
+                //       ),
+                //     ],
+                //   ),
+                //
+                //   child: Rating(),
+                // ),
               ],
       ),
     );

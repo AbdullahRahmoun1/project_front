@@ -1,3 +1,4 @@
+import 'package:consulting_app/modles/specialize.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../server/server.dart';
@@ -11,24 +12,24 @@ class ExpertInfo extends StatefulWidget {
 
 class _ExpertInfoState extends State<ExpertInfo> {
   bool _isLoading = true;
-  var ExpertId;
-  var selectedExpert;
-  var spId;
-  var sp;
-  var dis;
-  var phone;
-  var adress;
+  String? ExpertId='';
+  var selectedExpert={};
+  String? spId='';
+  var sp=Specialize('', '', '', '', '', '');
+  String? dis='';
+  String? phone='';
+  String? adress='';
 
   @override
   void didChangeDependencies() {
     ExpertId = ModalRoute.of(context)?.settings.arguments as String;
-    srvr
-        .getUserData(ExpertId, context)
-        .then((selectedExpert) {
+    srvr.getUserData(ExpertId, context).then((selectedExpert) {
       setState(() {
         spId = '0';
+        print("asdfghjklrxhtcfvygbhun");
+        print(selectedExpert['specialize'][0].name);
         sp = selectedExpert['specialize']
-            .firstWhere((element) => element.id == spId);
+            .firstWhere((element) => true/*element.id == spId*/);
         dis = sp.discription;
         phone = selectedExpert['specialize'].first.number!;
         adress = selectedExpert['specialize'].first.adress!;
@@ -53,7 +54,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
       dis = sp.discription;
     }
 
-    var _selectedValue = selectedExpert['specialize'][0].name!;
+    //var _selectedValue = selectedExpert['specialize'][0].name;
     return Container(
       padding: const EdgeInsets.all(20),
       child: _isLoading
@@ -72,7 +73,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                   decoration: InputDecoration(
                     labelText: 'Select specialize',
                   ),
-                  value: _selectedValue,
+                  value: selectedExpert['specialize'][1].name,
                   items: selectedExpert['specialize']
                       .map(
                         (e) => DropdownMenuItem(
@@ -121,7 +122,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                 Container(
                   margin: EdgeInsets.only(top: 10, bottom: 20),
                   child: Text(
-                    phone,
+                    phone!,
                     style: TextStyle(
                       color: Color.fromARGB(255, 113, 113, 113),
                       fontWeight: FontWeight.bold,
@@ -140,7 +141,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                 Container(
                   margin: EdgeInsets.only(top: 10, bottom: 20),
                   child: Text(
-                    adress,
+                    adress!,
                     style: TextStyle(
                       color: Color.fromARGB(255, 113, 113, 113),
                       fontWeight: FontWeight.bold,

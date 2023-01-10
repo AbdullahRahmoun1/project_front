@@ -1,4 +1,5 @@
-import 'package:consulting_app/screen/profile_screen.dart';
+import '../screen/expert_scdual.dart';
+import '../screen/profile_screen.dart';
 
 import '../widgets/categories_list.dart';
 import '../providers/categories.dart';
@@ -23,7 +24,8 @@ class _HomeSceenState extends State<HomeSceen> {
   bool _isExpert = false;
   String _userName = '';
   String _userPhone = '';
-  var fav=[];
+  String _userImage = '';
+  var fav = [];
   var reservations=[];
   var itemss=[];
 
@@ -40,12 +42,26 @@ class _HomeSceenState extends State<HomeSceen> {
       });
       itemss = Provider.of<Categories>(context).items;
       try {
-        dynamic extraxtData =
-        srvr
-            .getUserData('-1', context);
-        _userName = extraxtData['name'];
-        _userPhone = extraxtData['phone'];
-        _isExpert = extraxtData['isExp'];
+        dynamic extraxtData = await srvr.getUserData('-1', context);
+        setState(() {
+          _userName = extraxtData['name'];
+          _userPhone = extraxtData['phone'];
+          _userImage = extraxtData['image'];
+          _isExpert = extraxtData['isExp'];
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print('_isExpert');
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print('_isExpert');
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+        });
       } catch (e) {
         print(e);
       }
@@ -132,7 +148,9 @@ class _HomeSceenState extends State<HomeSceen> {
                   },
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(ExpertScdual.nameRout);
+                  },
                   icon: Icon(
                     Icons.calendar_month_rounded,
                     color: Colors.white,
@@ -142,7 +160,7 @@ class _HomeSceenState extends State<HomeSceen> {
               ]
             : [Container()],
       ),
-      drawer: AppDrawer(_userName, _userPhone),
+      drawer: AppDrawer(_userName, _userPhone, _userImage),
       body: _isLoaded
           ? Center(
               child: Container(

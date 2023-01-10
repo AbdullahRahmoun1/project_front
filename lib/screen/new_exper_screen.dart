@@ -151,7 +151,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 Row(
                   children: <Widget>[
                     Text(
-                      'Set your empty tiem',
+                      'Set your empty time',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -288,6 +288,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                           _appointments['times']!.add(currentAppointment);
                           print(_appointments);
                           clearTime();
+                          print(expertInfo);
                         }
                       },
                       child: Text(
@@ -316,7 +317,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                         } else {
                           Navigator.of(context).pop();
                           _saveForm();
-                              srvr.becomeExpert(expertInfo, context);
+                          srvr.becomeExpert(expertInfo, context);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -617,44 +618,12 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 width: screenWidth / 3,
                 child: ElevatedButton(
                   onPressed: () {
-                    print(expertInfo);
                     print('the id = $id');
                     checkWrong();
                     if (isCorrect) {
                       _saveData();
+                      print(expertInfo);
                       startAddDate(context);
-                      if (_isDone) {
-                        _saveForm();
-                        srvr
-                            .becomeExpert(expertInfo, context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Row(
-                              children: <Widget>[
-                                Text('Congratulations'),
-                                SizedBox(
-                                  width: 14,
-                                ),
-                                Icon(
-                                  Icons.auto_awesome,
-                                  color: Colors.amber,
-                                ),
-                              ],
-                            ),
-                            content: Text(
-                                'You became ${categories.firstWhere((element) => element.id == id).name} expert successfully'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Ok'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
                     }
                   },
                   child: Text(
