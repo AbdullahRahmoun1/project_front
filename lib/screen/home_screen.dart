@@ -24,6 +24,7 @@ class _HomeSceenState extends State<HomeSceen> {
   String _userName = '';
   String _userPhone = '';
   String _userImage = '';
+  var fav=[];
 
   @override
   void initState() {
@@ -65,9 +66,10 @@ class _HomeSceenState extends State<HomeSceen> {
 
       srvr
           .getHome(items, context)
-          .then((_) {
-        setState(() {
-          _isLoaded = false;
+          .then((data) {
+            setState(() {
+              fav=data['fav'];
+              _isLoaded = false;
         });
       });
     }
@@ -81,8 +83,6 @@ class _HomeSceenState extends State<HomeSceen> {
       context,
     );
     final categories = categoriesData.items;
-    final favExperts = Provider.of<Experts>(context);
-    final fav = favExperts.items;
     Widget getFavorite() {
       if (fav.isEmpty) {
         return Container(
