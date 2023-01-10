@@ -20,6 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isExpert = false;
   String _userName = '';
   String _userPhone = '';
+  String _userImage = '';
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
       _userName = extraxtData['name'];
       _userPhone = extraxtData['phone'];
+      _userImage = extraxtData['image'];
       _isExpert = extraxtData['isExp'];
     } catch (e) {
       print(e);
@@ -98,7 +100,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-      drawer: AppDrawer(_userName, _userPhone),
+      drawer: AppDrawer(_userName, _userPhone, _userImage),
       body: Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(

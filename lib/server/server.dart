@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '10.0.2.2';
+final String baseUrl = '127.0.0.1';
 String token = "";
 
 class srvr {
@@ -62,7 +62,8 @@ class srvr {
           asd[i]['specialization'],
           asd[i]['description'],
           extraxtData['data']['phone'],
-          asd[i]['address']));
+          asd[i]['address'],
+          asd[i]['price'].toString()));
     }
 
     return {

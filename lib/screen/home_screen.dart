@@ -23,6 +23,7 @@ class _HomeSceenState extends State<HomeSceen> {
   bool _isExpert = false;
   String _userName = '';
   String _userPhone = '';
+  String _userImage = '';
 
   @override
   void initState() {
@@ -37,12 +38,27 @@ class _HomeSceenState extends State<HomeSceen> {
       });
       var items = Provider.of<Categories>(context).items;
       try {
-        dynamic extraxtData =
-        srvr
-            .getUserData('-1', context);
-        _userName = extraxtData['name'];
-        _userPhone = extraxtData['phone'];
-        _isExpert = extraxtData['isExp'];
+        dynamic extraxtData = await srvr.getUserData('-1', context);
+        setState(() {
+          _userName = extraxtData['name'];
+          _userPhone = extraxtData['phone'];
+          _userImage = extraxtData['image'];
+          _isExpert = extraxtData['isExp'];
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print('_isExpert');
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print('_isExpert');
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+        });
+
       } catch (e) {
         print(e);
       }
@@ -134,7 +150,7 @@ class _HomeSceenState extends State<HomeSceen> {
               ]
             : [Container()],
       ),
-      drawer: AppDrawer(_userName, _userPhone),
+      drawer: AppDrawer(_userName, _userPhone, _userImage),
       body: _isLoaded
           ? Center(
               child: Container(

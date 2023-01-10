@@ -7,8 +7,9 @@ import './my_header_drawer.dart';
 class AppDrawer extends StatelessWidget {
   String? userName;
   String? userPhone;
+  String? userImage;
 
-  AppDrawer(this.userName, this.userPhone);
+  AppDrawer(this.userName, this.userPhone, this.userImage);
 
   @override
   Widget build(BuildContext context) {
