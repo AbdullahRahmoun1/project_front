@@ -24,6 +24,8 @@ class _HomeSceenState extends State<HomeSceen> {
   bool _isExpert = false;
   String _userName = '';
   String _userPhone = '';
+  String _userImage = '';
+  var fav = [];
 
   @override
   void initState() {
@@ -38,16 +40,33 @@ class _HomeSceenState extends State<HomeSceen> {
       });
       var items = Provider.of<Categories>(context).items;
       try {
-        dynamic extraxtData = srvr.getUserData('-1', context);
-        _userName = extraxtData['name'];
-        _userPhone = extraxtData['phone'];
-        _isExpert = extraxtData['isExp'];
+        dynamic extraxtData = await srvr.getUserData('-1', context);
+        setState(() {
+          _userName = extraxtData['name'];
+          _userPhone = extraxtData['phone'];
+          _userImage = extraxtData['image'];
+          _isExpert = extraxtData['isExp'];
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print('_isExpert');
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+          print('_isExpert');
+          print(_isExpert);
+          print(_isExpert);
+          print(_isExpert);
+        });
       } catch (e) {
         print(e);
       }
 
-      srvr.getHome(items, context).then((_) {
+      srvr.getHome(items, context).then((data) {
         setState(() {
+          fav = data['fav'];
           _isLoaded = false;
         });
       });
@@ -62,8 +81,6 @@ class _HomeSceenState extends State<HomeSceen> {
       context,
     );
     final categories = categoriesData.items;
-    final favExperts = Provider.of<Experts>(context);
-    final fav = favExperts.items;
     Widget getFavorite() {
       if (fav.isEmpty) {
         return Container(
@@ -133,7 +150,7 @@ class _HomeSceenState extends State<HomeSceen> {
               ]
             : [Container()],
       ),
-      drawer: AppDrawer(_userName, _userPhone),
+      drawer: AppDrawer(_userName, _userPhone, _userImage),
       body: _isLoaded
           ? Center(
               child: Container(

@@ -1,6 +1,6 @@
+import 'package:consulting_app/modles/specialize.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import '../server/server.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -12,19 +12,18 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool? _isInit = true;
-  bool _isLoaded = false;
-  String _userName = '';
-  String _userPhone = '';
-  String _userImage = '';
-  String _userDis = '';
-  String _userPrice = '';
-  var _idSp = '';
-  String _userAdress = '';
-  dynamic _price;
-  dynamic _totalRate;
-  dynamic _creditCard;
-  List<dynamic> _spec = [];
-  dynamic currentIndex;
+  bool _isLoading = true;
+  String? _userName = '';
+  String? _userPhone = '';
+  String? _userImage = '';
+  String? _userDis = '';
+  String? _idSp = '';
+  String? _userAdress = '';
+  String? _price;
+  String? _totalRate;
+  String? _creditCard;
+  List<Specialize> _spec = [];
+  Specialize currentIndex=Specialize('','','','','','');
   var _selectedValue;
 
   @override
@@ -36,29 +35,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void didChangeDependencies() async {
     if (_isInit!) {
       setState(() {
-        _isLoaded = true;
+        _isLoading = true;
       });
       try {
-        dynamic extraxtData =
-        srvr
-            .getUserData('-1', context);
-        _spec = extraxtData['expertise'];
-        _userName = extraxtData['name'];
-        _userPhone = extraxtData['phone'];
-        _userImage = extraxtData['image'];
-        _creditCard = extraxtData['money'];
-        _totalRate = extraxtData['totalRate'];
-        _price = _spec[0]['price'];
-        _userDis = _spec[0]['description'];
-        _userAdress = _spec[0]['address'];
-        _selectedValue = _spec[0]['specialization'];
-        _idSp = _spec[0]['id'];
+        dynamic extraxtData =await srvr.getUserData('-1', context);
+        setState(() {
+          _spec = extraxtData['specialize'];
+          _userName = extraxtData['name'];
+          _userPhone = extraxtData['phone'];
+          _userImage = extraxtData['image'];
+          _creditCard = extraxtData['money'].toString();
+          _totalRate = extraxtData['totalRate'].toString();
+          _price = _spec[0].price.toString();
+          _userDis = _spec[0].discription;
+          _userAdress = _spec[0].adress;
+          _idSp = _spec[0].id;
+          _selectedValue = _spec[0].name;
+          _isLoading = false;
+          print(_isLoading);
+        });
       } catch (e) {
         print(e);
       }
 
       setState(() {
-        _isLoaded = false;
+        _isLoading = false;
       });
     }
     _isInit = false;
@@ -82,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoaded
+      body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -157,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             radius: 72,
                             child: CircleAvatar(
                               backgroundImage: NetworkImage(
-                                  "http://$baseUrl:8000/api/" + _userImage),
+                                  "http://$baseUrl:8000/api/" + _userImage!),
                               backgroundColor: Colors.white,
                               radius: 70,
                             ),
@@ -165,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Container(
                             margin: const EdgeInsets.all(20),
                             child: Text(
-                              _userName,
+                              _userName!,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -191,14 +192,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             (await _picker.pickImage(source: ImageSource.gallery))?.path;
                             print(localPath);
                             if (!(localPath!.isEmpty)) {
-                              _isLoaded = true;
+                              _isLoading = true;
                               var result=await srvr
                                   .uploadImage(localPath, context);
                               var path=result['path'];
                               if (!path.toString().isEmpty) {
                                 setState(() {
                                   _userImage = path;
-                                  _isLoaded = false;
+                                  _isLoading = false;
                                 });
                               }else {
                                 var message=result['msg'];
@@ -344,22 +345,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 items: _spec
                                     .map(
                                       (e) => DropdownMenuItem(
-                                        child: Text(e['specialization']),
-                                        value: e['specialization'],
+                                        child: Text(e.name!),
+                                        value: e.name,
                                       ),
                                     )
                                     .toList(),
                                 onChanged: (value) {
                                   currentIndex = _spec.firstWhere(
                                     (element) {
-                                      return element['specialization'] == value;
+                                      return element.name == value;
                                     },
                                   );
                                   setState(() {
                                     _selectedValue = value;
-                                    _userDis = currentIndex['description'];
-                                    _userAdress = currentIndex['address'];
-                                    _price = currentIndex['price'];
+                                    _userDis = currentIndex.discription;
+                                    _userAdress = currentIndex.adress;
+                                    _price = currentIndex.price;
                                   });
                                 },
                               ),
@@ -377,7 +378,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Container(
                                 margin: EdgeInsets.only(top: 10, bottom: 20),
                                 child: Text(
-                                  _userDis,
+                                  _userDis!,
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 113, 113, 113),
                                     fontWeight: FontWeight.bold,
@@ -396,7 +397,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Container(
                                 margin: EdgeInsets.only(top: 10, bottom: 20),
                                 child: Text(
-                                  _userPhone,
+                                  _userPhone!,
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 113, 113, 113),
                                     fontWeight: FontWeight.bold,
@@ -415,7 +416,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Container(
                                 margin: EdgeInsets.only(top: 10, bottom: 20),
                                 child: Text(
-                                  _userAdress,
+                                  _userAdress!,
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 113, 113, 113),
                                     fontWeight: FontWeight.bold,

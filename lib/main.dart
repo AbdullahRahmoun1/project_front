@@ -33,9 +33,6 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
-        /*ChangeNotifierProvider.value(
-          value: Server(),
-        ),*/
         ChangeNotifierProvider(
           create: (context) => Experts(),
         ),
