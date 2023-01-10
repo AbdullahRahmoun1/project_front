@@ -48,7 +48,6 @@ class _HomeSceenState extends State<HomeSceen> {
           _userPhone = extraxtData['phone'];
           _userImage = extraxtData['image'];
           _isExpert = extraxtData['isExp'];
-      
         });
       } catch (e) {
         print(e);
