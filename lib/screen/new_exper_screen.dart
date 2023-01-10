@@ -50,7 +50,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
       'Thursday',
       'Friday',
     ];
-    String? id = '0';
+    String? id = '1';
     Map<String?, dynamic> expertInfo = {
       "specialty_id": id,
       "price": 0,
@@ -79,14 +79,17 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
       return;
     }
 
+    void _saveData() {
+      print(expertInfo);
+      _form.currentState!.save();
+    }
+
     void _saveForm() {
       final isValid = _form.currentState!.validate();
       if (!isValid) {
         isCorrect = false;
         return;
       }
-      print(expertInfo);
-      _form.currentState!.save();
 
       _price.clear();
       _spec.clear();
@@ -311,47 +314,38 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                             ),
                           );
                         } else {
-                          print('ready');
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
+                          _saveForm();
+                          Provider.of<Server>(context, listen: false)
+                              .becomeExpert(expertInfo, context);
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Row(
+                                children: <Widget>[
+                                  Text('Congratulations'),
+                                  SizedBox(
+                                    width: 14,
+                                  ),
+                                  Icon(
+                                    Icons.auto_awesome,
+                                    color: Colors.amber,
+                                  ),
+                                ],
+                              ),
+                              content: Text(
+                                  'You became ${categories.firstWhere((element) => element.id == id).name} expert successfully'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
                         }
-                        //  else {
-                        //   Navigator.of(context).pop();
-                        //   setState(() {
-                        //     _isDone = true;
-                        //   });
-                        //   if (_isDone) {
-                        //     _saveForm();
-                        //     Provider.of<Server>(context, listen: false)
-                        //         .becomeExpert(expertInfo, context);
-                        //     showDialog(
-                        //       context: context,
-                        //       builder: (context) => AlertDialog(
-                        //         title: Row(
-                        //           children: <Widget>[
-                        //             Text('Congratulations'),
-                        //             SizedBox(
-                        //               width: 14,
-                        //             ),
-                        //             Icon(
-                        //               Icons.auto_awesome,
-                        //               color: Colors.amber,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         content: Text(
-                        //             'You became ${categories.firstWhere((element) => element.id == id).name} expert successfully'),
-                        //         actions: <Widget>[
-                        //           TextButton(
-                        //             onPressed: () {
-                        //               Navigator.of(context).pop();
-                        //             },
-                        //             child: Text('Ok'),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     );
-                        //   }
-                        // }
                       },
                       child: Text(
                         'submit',
@@ -628,6 +622,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                     print('the id = $id');
                     checkWrong();
                     if (isCorrect) {
+                      _saveData();
                       startAddDate(context);
                     }
                   },

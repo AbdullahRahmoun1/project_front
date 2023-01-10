@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '127.0.0.1';
+final String baseUrl = '10.0.2.2';
 String token = "";
 
 class Server with ChangeNotifier {
@@ -108,7 +108,9 @@ class Server with ChangeNotifier {
           id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
     }
     print(exps.items);
-    if(exps.items.length==0){throw Exception();}
+    if (exps.items.length == 0) {
+      throw Exception();
+    }
     return exps;
   }
 
@@ -123,7 +125,8 @@ class Server with ChangeNotifier {
     };
     var body = {'expert_id': expertId};
     try {
-      var response = await http.post(url, headers: header, body: json.encode(body));
+      var response =
+          await http.post(url, headers: header, body: json.encode(body));
 
       if (response.statusCode == 200) result = true;
     } catch (e) {
@@ -132,7 +135,7 @@ class Server with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String,dynamic>> uploadImage(String image, context) async {
+  Future<Map<String, dynamic>> uploadImage(String image, context) async {
     String result = "";
     final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
     var token = await getToken(context);
@@ -145,19 +148,13 @@ class Server with ChangeNotifier {
     request.headers.addAll(header);
     request.files.add(await http.MultipartFile.fromPath('image', image));
     var response = await request.send();
-    var data=await response.stream.bytesToString();
-    var dota=json.decode(data);
-    if (response.statusCode == 200){
-      result =dota['data'];
-      return {
-        'msg':"",
-        'path':result
-      };
+    var data = await response.stream.bytesToString();
+    var dota = json.decode(data);
+    if (response.statusCode == 200) {
+      result = dota['data'];
+      return {'msg': "", 'path': result};
     }
-    return {
-      'msg':dota['userMessage'],
-      'path':""
-    };
+    return {'msg': dota['userMessage'], 'path': ""};
   }
 
   Future<Experts> getAllFavorite(context) async {
