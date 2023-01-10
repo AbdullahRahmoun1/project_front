@@ -125,6 +125,26 @@ class srvr {
     return exps;
   }
 
+  static Future<Map<String, dynamic>> expertReservation(context) async {
+    var token = await getToken(context);
+    var url = Uri.parse('http://$baseUrl:8000/api/reservation');
+    var extractedData;
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Accept-Encoding': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      var response = await http.get(url, headers: header);
+      extractedData = json.decode(response.body) as Map<String, dynamic>;
+      print(json.decode(response.body));
+      print(response.statusCode);
+    } catch (e) {
+      print(e);
+    }
+    return extractedData;
+  }
+
   static Future<bool> manageLove(String expertId, context) async {
     bool result = false;
     var token = await getToken(context);

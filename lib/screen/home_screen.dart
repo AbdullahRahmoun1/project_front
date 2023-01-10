@@ -1,4 +1,5 @@
-import 'package:consulting_app/screen/profile_screen.dart';
+import '../screen/expert_scdual.dart';
+import '../screen/profile_screen.dart';
 
 import '../widgets/categories_list.dart';
 import '../providers/categories.dart';
@@ -37,9 +38,7 @@ class _HomeSceenState extends State<HomeSceen> {
       });
       var items = Provider.of<Categories>(context).items;
       try {
-        dynamic extraxtData =
-        srvr
-            .getUserData('-1', context);
+        dynamic extraxtData = srvr.getUserData('-1', context);
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];
         _isExpert = extraxtData['isExp'];
@@ -47,9 +46,7 @@ class _HomeSceenState extends State<HomeSceen> {
         print(e);
       }
 
-      srvr
-          .getHome(items, context)
-          .then((_) {
+      srvr.getHome(items, context).then((_) {
         setState(() {
           _isLoaded = false;
         });
@@ -124,7 +121,9 @@ class _HomeSceenState extends State<HomeSceen> {
                   },
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(ExpertScdual.nameRout);
+                  },
                   icon: Icon(
                     Icons.calendar_month_rounded,
                     color: Colors.white,

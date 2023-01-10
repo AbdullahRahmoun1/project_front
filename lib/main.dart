@@ -1,3 +1,4 @@
+import 'package:consulting_app/screen/expert_scdual.dart';
 import 'package:consulting_app/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
           home: auth.isAuth ? TabsScreen() : AuthScreen(),
           routes: {
             GetStartedActivate.routName: (context) => GetStartedActivate(),
+            ExpertScdual.nameRout: (context) => ExpertScdual(),
             TabsScreen.routName: (context) => TabsScreen(),
             HomeSceen.routName: (context) => HomeSceen(),
             SearchScreen.routName: (context) => SearchScreen(),
