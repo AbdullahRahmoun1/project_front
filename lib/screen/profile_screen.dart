@@ -40,7 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       try {
         dynamic extraxtData =
-        Provider.of<Server>(context).getUserData('-1', context);
+        srvr
+            .getUserData('-1', context);
         _spec = extraxtData['expertise'];
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];
@@ -191,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             print(localPath);
                             if (!(localPath!.isEmpty)) {
                               _isLoaded = true;
-                              var result=await Provider.of<Server>(context,listen: false)
+                              var result=await srvr
                                   .uploadImage(localPath, context);
                               var path=result['path'];
                               if (!path.toString().isEmpty) {

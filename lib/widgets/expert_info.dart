@@ -22,7 +22,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
   @override
   void didChangeDependencies() {
     ExpertId = ModalRoute.of(context)?.settings.arguments as String;
-    Provider.of<Server>(context)
+    srvr
         .getUserData(ExpertId, context)
         .then((selectedExpert) {
       setState(() {

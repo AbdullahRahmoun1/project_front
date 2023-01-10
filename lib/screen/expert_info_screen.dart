@@ -23,7 +23,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
   @override
   void didChangeDependencies() async {
     ExpertId = ModalRoute.of(context)?.settings.arguments as String?;
-    Provider.of<Server>(context)
+    srvr
             .getUserData(ExpertId, context)
             .then((exp) => {
               setState(() {

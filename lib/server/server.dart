@@ -1,7 +1,6 @@
 import 'package:consulting_app/modles/specialize.dart';
 import 'package:consulting_app/providers/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,8 +12,8 @@ import '../modles/http_exception.dart';
 final String baseUrl = '127.0.0.1';
 String token = "";
 
-class Server with ChangeNotifier {
-  Future<String?> getToken(context) async {
+class srvr {
+  static Future<String?> getToken(context) async {
     if (token.isEmpty) {
       final storage = new FlutterSecureStorage();
       String? value = await storage.read(key: 'token');
@@ -24,7 +23,7 @@ class Server with ChangeNotifier {
     return token;
   }
 
-  Future<void> getHome(items, context) async {
+  static Future<void> getHome(items, context) async {
     try {
       final url = Uri.parse('http://$baseUrl:8000/api/home');
       var token = await getToken(context);
@@ -46,7 +45,7 @@ class Server with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> getUserData(String? id, context) async {
+  static Future<Map<String, dynamic>> getUserData(String? id, context) async {
     final url = Uri.parse('http://$baseUrl:8000/api/user/$id');
     var token = await getToken(context);
     Map<String, String> header = {
@@ -73,7 +72,7 @@ class Server with ChangeNotifier {
     };
   }
 
-  Future<void> becomeExpert(
+  static Future<void> becomeExpert(
       Map<String?, dynamic> body, BuildContext context) async {
     var token = await getToken(context);
     var url = Uri.parse('http://$baseUrl:8000/api/expert');
@@ -94,7 +93,7 @@ class Server with ChangeNotifier {
     }
   }
 
-  Future<Experts> search(String cat, String query, context) async {
+  static Future<Experts> search(String cat, String query, context) async {
     Experts exps = Experts();
     var token = await getToken(context);
     Map<String, String> header = {
@@ -119,7 +118,7 @@ class Server with ChangeNotifier {
     return exps;
   }
 
-  Future<bool> manageLove(String expertId, context) async {
+  static Future<bool> manageLove(String expertId, context) async {
     bool result = false;
     var token = await getToken(context);
     var url = Uri.parse('http://$baseUrl:8000/api/favorite');
@@ -140,7 +139,7 @@ class Server with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String,dynamic>> uploadImage(String image, context) async {
+  static Future<Map<String,dynamic>> uploadImage(String image, context) async {
     String result = "";
     final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
     var token = await getToken(context);
@@ -168,7 +167,7 @@ class Server with ChangeNotifier {
     };
   }
 
-  Future<Experts> getAllFavorite(context) async {
+  static Future<Experts> getAllFavorite(context) async {
     Experts exps = Experts();
     var token = await getToken(context);
     Map<String, String> header = {

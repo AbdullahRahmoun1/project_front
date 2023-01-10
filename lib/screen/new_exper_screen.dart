@@ -631,7 +631,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                       startAddDate(context);
                       if (_isDone) {
                         _saveForm();
-                        Provider.of<Server>(context)
+                        srvr
                             .becomeExpert(expertInfo, context);
                         showDialog(
                           context: context,
