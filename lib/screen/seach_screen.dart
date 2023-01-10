@@ -21,6 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String _userName = '';
   String _userPhone = '';
   String _userImage = '';
+  List<User>experts=[];
 
   @override
   void initState() {
@@ -33,11 +34,16 @@ class _SearchScreenState extends State<SearchScreen> {
     try {
       dynamic extraxtData =
           await srvr.getUserData('-1', context);
-
       _userName = extraxtData['name'];
       _userPhone = extraxtData['phone'];
       _userImage = extraxtData['image'];
       _isExpert = extraxtData['isExp'];
+      srvr.search('-1',"", context).then((value){
+        setState(() {
+          experts=value.items;
+        });
+
+      });
     } catch (e) {
       print(e);
     }
@@ -46,38 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var expertsData = Provider.of<Experts>(context, listen: false);
-    var experts = expertsData.items;
     var dispaly_experts = experts;
-
-    void updateList(String? value) {
-      List<User> result = [];
-      if (value!.isEmpty) {
-        dispaly_experts = result;
-      } else {
-        result = experts
-            .where(
-              (element) => element.name!.toLowerCase().contains(
-                    value.toLowerCase(),
-                  ),
-            )
-            .toList();
-      }
-      srvr
-          .search("2", ".", context).then((exps) {
-        print("surprise !");
-        setState(() {
-          dispaly_experts = exps.items;
-        });
-      });
-      //   setState(()async {
-      //     print("hello brothers");
-      //     Experts some=await Provider.of<Server>(context).search("2", ".", context);
-      //     print(some.items);
-      //     dispaly_experts = some.items;
-      //     });
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -134,7 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 class mySearchDelegate extends SearchDelegate {
-
+  String categoryName="nothing";
   List<User> filtterExpert =[];
 
   @override
@@ -152,7 +127,8 @@ class mySearchDelegate extends SearchDelegate {
       ),
     ];
   }
-
+  @override
+  String? get searchFieldLabel => 'Search in $categoryName';
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
@@ -187,22 +163,6 @@ class mySearchDelegate extends SearchDelegate {
             return Center(child: CircularProgressIndicator());
           }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //
     //  List<User> filtterExpert =[];

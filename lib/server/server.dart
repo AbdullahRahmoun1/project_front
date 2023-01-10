@@ -114,8 +114,8 @@ class srvr {
     if (response.statusCode != 200) {
       throw HttpException(JSONresponse['userMessage']);
     }
-
-    List listOfExps = JSONresponse['data'];
+print( JSONresponse);
+    List listOfExps = (JSONresponse['data']);
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(
           id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
@@ -199,6 +199,8 @@ class srvr {
     };
     final url = Uri.parse('http://$baseUrl:8000/api/favorite');
     final response = await http.get(url, headers: header);
+    print('----------------------------------------');
+    print(response.body);
     final JSONresponse = json.decode(response.body);
 
     print("getFavs");
