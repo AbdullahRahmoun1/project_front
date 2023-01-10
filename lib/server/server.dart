@@ -34,10 +34,11 @@ class srvr {
       };
       final response = await http.get(url, headers: header);
       final extractData =
-          json.decode(response.body) as LinkedHashMap<String, dynamic>;
+          json.decode(response.body) ;
       for (var i = 0; i < items.length; i++) {
         items[i].name = extractData['data']['Specialities'][i]['specialtyName'];
       }
+      print(extractData['data']);
       return extractData;
     } catch (e) {
       print(e);
