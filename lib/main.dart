@@ -44,6 +44,10 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          builder: (context, child) => MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child!),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primarySwatch: Colors.deepPurple,
