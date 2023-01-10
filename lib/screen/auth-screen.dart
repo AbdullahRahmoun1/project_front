@@ -333,14 +333,14 @@ class _AuthCardState extends State<AuthCard> {
                                 TextSpan(
                                   text: 'You dont\'t have account? ',
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 15),
+                                      color: Colors.grey, fontSize: 12),
                                 ),
                                 TextSpan(
                                   text: 'Sign up',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.deepPurple,
-                                      fontSize: 18),
+                                      fontSize: 15),
                                 ),
                               ],
                             )
@@ -349,14 +349,14 @@ class _AuthCardState extends State<AuthCard> {
                                 TextSpan(
                                   text: 'You already has account? ',
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 15),
+                                      color: Colors.grey, fontSize: 12),
                                 ),
                                 TextSpan(
                                   text: 'Log in',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.deepPurple,
-                                      fontSize: 18),
+                                      fontSize: 15),
                                 ),
                               ],
                             ),

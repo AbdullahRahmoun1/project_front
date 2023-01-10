@@ -61,6 +61,10 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
     ) {
       showModalBottomSheet(
         context: ctx,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        )),
         builder: (_) {
           return Container(
             margin: EdgeInsets.only(top: 30, left: 40, right: 40),
@@ -112,7 +116,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                   },
                 ),
                 SizedBox(
-                  width: 20,
+                  width: 40,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -133,7 +137,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                   ],
                 ),
                 SizedBox(
-                  width: 20,
+                  width: 40,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
