@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/raiting.dart';
-import '../widgets/expert_info.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../providers/experts.dart';
 import '../server/server.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,6 +15,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoaded = false;
   String _userName = '';
   String _userPhone = '';
+  String _userImage = '';
   String _userDis = '';
   String _userPrice = '';
   var _idSp = '';
@@ -41,10 +40,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       try {
         dynamic extraxtData =
-            await Provider.of<Server>(context).getUserData(-1, context);
+            await Provider.of<Server>(context).getUserData('-1', context);
         _spec = extraxtData['expertise'];
         _userName = extraxtData['name'];
         _userPhone = extraxtData['phone'];
+        _userImage = extraxtData['image'];
         _creditCard = extraxtData['money'];
         _totalRate = extraxtData['totalRate'];
         _price = _spec[0]['price'];
@@ -66,6 +66,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void back(BuildContext context) {
     Navigator.of(context).pop(ProfileScreen.routName);
+  }
+  void _showToast(String text,BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
   }
 
   double rating = 0;
@@ -147,8 +155,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundColor: Colors.white,
                             radius: 72,
                             child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/kaiba.png'),
+                              backgroundImage: NetworkImage(
+                                  "http://$baseUrl:8000/api/" + _userImage),
                               backgroundColor: Colors.white,
                               radius: 70,
                             ),
@@ -176,7 +184,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.white,
                             size: 25,
                           )),
-                          onPressed: () {}),
+                          onPressed: () async{
+                            final ImagePicker _picker = ImagePicker();
+                            var localPath=
+                            (await _picker.pickImage(source: ImageSource.gallery))?.path;
+                            print(localPath);
+                            if (!(localPath!.isEmpty)) {
+                              _isLoaded = true;
+                              var result=await Provider.of<Server>(context,listen: false)
+                                  .uploadImage(localPath, context);
+                              var path=result['path'];
+                              if (!path.toString().isEmpty) {
+                                setState(() {
+                                  _userImage = path;
+                                  _isLoaded = false;
+                                });
+                              }else {
+                                var message=result['msg'];
+                                _showToast(message, context);
+                              }
+                            }
+                          }),
                     ),
                   ],
                 ),
