@@ -55,11 +55,20 @@ class _ExpertWidgetState extends State<ExpertWidget> {
         child: ListTile(
           leading: CircleAvatar(
             backgroundImage: AssetImage('assets/images/cosn.png'),
-            radius: 42,
-            child: CircleAvatar(
-              radius: 30,
-              backgroundImage:
-                  NetworkImage("http://$baseUrl:8000/api/" + expert.imagePath!),
+            radius: 30,
+            child: Stack(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage('assets/images/cosn.png'),
+                ),
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Color.fromRGBO(255, 255, 255, 255),
+                  backgroundImage: NetworkImage(
+                      "http://$baseUrl:8000/api/" + expert.imagePath!),
+                ),
+              ],
             ),
           ),
           trailing: Column(

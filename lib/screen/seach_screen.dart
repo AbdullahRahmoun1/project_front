@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
     var items = Provider.of<Categories>(context).items;
     try {
       dynamic extraxtData =
-          await Provider.of<Server>(context).getUserData(-1, context);
+          await Provider.of<Server>(context).getUserData('-1', context);
 
       _userName = extraxtData['name'];
       _userPhone = extraxtData['phone'];
