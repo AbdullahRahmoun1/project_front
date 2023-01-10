@@ -67,6 +67,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void back(BuildContext context) {
     Navigator.of(context).pop(ProfileScreen.routName);
   }
+  void _showToast(String text,BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
+  }
 
   double rating = 0;
 
@@ -147,8 +155,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundColor: Colors.white,
                             radius: 72,
                             child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage("http://$baseUrl:8000/api/"+_userImage),
+                              backgroundImage: NetworkImage(
+                                  "http://$baseUrl:8000/api/" + _userImage),
                               backgroundColor: Colors.white,
                               radius: 70,
                             ),
@@ -176,17 +184,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.white,
                             size: 25,
                           )),
-                          onPressed: () {
+                          onPressed: () async{
                             final ImagePicker _picker = ImagePicker();
-                            XFile? image ;
-                            _picker.pickImage(source: ImageSource.gallery).then((value) {
-                              image=value;
-                              print('-----------------------------------------------------------------------');
-                              print(image?.path);
-                              print('-----------------------------------------------------------------------');
-
-                            } );
-
+                            var localPath=
+                            (await _picker.pickImage(source: ImageSource.gallery))?.path;
+                            print(localPath);
+                            if (!(localPath!.isEmpty)) {
+                              _isLoaded = true;
+                              var result=await Provider.of<Server>(context,listen: false)
+                                  .uploadImage(localPath, context);
+                              var path=result['path'];
+                              if (!path.toString().isEmpty) {
+                                setState(() {
+                                  _userImage = path;
+                                  _isLoaded = false;
+                                });
+                              }else {
+                                var message=result['msg'];
+                                _showToast(message, context);
+                              }
+                            }
                           }),
                     ),
                   ],

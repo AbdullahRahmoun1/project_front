@@ -130,8 +130,8 @@ class Server with ChangeNotifier {
     return result;
   }
 
-  Future<bool> uploadImage(XFile image, context) async {
-    bool result = false;
+  Future<Map<String,dynamic>> uploadImage(String image, context) async {
+    String result = "";
     final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
     var token = await getToken(context);
     Map<String, String> header = {
@@ -141,11 +141,21 @@ class Server with ChangeNotifier {
     };
     var request = new http.MultipartRequest("POST", url);
     request.headers.addAll(header);
-    request.files.add(await http.MultipartFile.fromPath('image', image.path));
-    request.send().then((response) {
-      if (response.statusCode == 200) result = true;
-    });
-    return result;
+    request.files.add(await http.MultipartFile.fromPath('image', image));
+    var response = await request.send();
+    var data=await response.stream.bytesToString();
+    var dota=json.decode(data);
+    if (response.statusCode == 200){
+      result =dota['data'];
+      return {
+        'msg':"",
+        'path':result
+      };
+    }
+    return {
+      'msg':dota['userMessage'],
+      'path':""
+    };
   }
 
   Future<Experts> getAllFavorite(context) async {
