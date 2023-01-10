@@ -14,7 +14,7 @@ class _ExpertScdualState extends State<ExpertScdual> {
   Widget build(BuildContext context) {
     var _isInit = true;
     var _isLoaded = false;
-    var reservations = [];
+    var reservations;
     @override
     void initState() {
       super.initState();
@@ -27,8 +27,10 @@ class _ExpertScdualState extends State<ExpertScdual> {
           _isLoaded = true;
         });
         try {
-          dynamic extractedData = srvr.expertReservation(context);
-          reservations = extractedData['data']['Reservations'];
+          dynamic extractedData = await srvr.expertReservation(context);
+          setState(() {
+            reservations = extractedData['data']['Reservations'];
+          });
         } catch (e) {
           print(e);
         }

@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '127.0.0.1';
+final String baseUrl = '10.0.2.2';
 String token = "";
 
 class srvr {
@@ -23,9 +23,9 @@ class srvr {
     return token;
   }
 
-  static Future<Map<String,dynamic>> getHome(items, context) async {
+  static Future<Map<String, dynamic>> getHome(items, context) async {
     try {
-      var result={'statusCode':400};
+      var result = {'statusCode': 400};
       final url = Uri.parse('http://$baseUrl:8000/api/home');
       var token = await getToken(context);
       Map<String, String> header = {
@@ -42,7 +42,7 @@ class srvr {
     } catch (e) {
       print(e);
     }
-    return {'msg':'failed'};
+    return {'msg': 'failed'};
   }
 
   static Future<Map<String, dynamic>> getUserData(String? id, context) async {
@@ -143,7 +143,12 @@ class srvr {
     } catch (e) {
       print(e);
     }
-    return extractedData;
+    return {
+      'message': extractedData['message'],
+      'data': {
+        'Reservations': extractedData['data']['Reservations'],
+      }
+    };
   }
 
   static Future<bool> manageLove(String expertId, context) async {
@@ -219,16 +224,17 @@ class srvr {
     return exps;
   }
 
-  static Future<bool> addTime(BuildContext context, expertId,times) async{
-    bool result=false;
+  static Future<bool> addTime(BuildContext context, expertId, times) async {
+    bool result = false;
     var token = await getToken(context);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
     final url = Uri.parse('http://$baseUrl:8000/api/time');
-    final response = await http.post(url, headers: header,body: json.encode(times));
-    if(response.statusCode==200)result=true;
+    final response =
+        await http.post(url, headers: header, body: json.encode(times));
+    if (response.statusCode == 200) result = true;
     print(response.body);
     return result;
   }

@@ -318,6 +318,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                           Navigator.of(context).pop();
                           _saveForm();
                           srvr.becomeExpert(expertInfo, context);
+                          srvr.addTime(context, id, _appointments);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
