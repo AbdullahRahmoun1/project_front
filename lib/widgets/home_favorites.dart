@@ -1,6 +1,8 @@
 import '../screen/favorit_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../server/server.dart';
+
 class HomeFavorites extends StatelessWidget {
   final String name;
   final String imagePath;
@@ -20,7 +22,8 @@ class HomeFavorites extends StatelessWidget {
           InkWell(
             onTap: () => getFavorite(context),
             child: CircleAvatar(
-              backgroundImage: AssetImage(imagePath),
+              backgroundImage: NetworkImage(
+                  "http://$baseUrl:8000/api/" + imagePath),
               radius: 50,
             ),
           ),

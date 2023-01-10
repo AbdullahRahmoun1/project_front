@@ -24,6 +24,8 @@ class _HomeSceenState extends State<HomeSceen> {
   String _userName = '';
   String _userPhone = '';
   var fav=[];
+  var reservations=[];
+  var itemss=[];
 
   @override
   void initState() {
@@ -36,7 +38,7 @@ class _HomeSceenState extends State<HomeSceen> {
       setState(() {
         _isLoaded = true;
       });
-      var items = Provider.of<Categories>(context).items;
+      itemss = Provider.of<Categories>(context).items;
       try {
         dynamic extraxtData =
         srvr
@@ -49,11 +51,17 @@ class _HomeSceenState extends State<HomeSceen> {
       }
 
       srvr
-          .getHome(items, context)
+          .getHome(itemss, context)
           .then((data) {
             setState(() {
-              fav=data['fav'];
-              _isLoaded = false;
+              reservations=data['data']['Reservations'];
+        });
+      });
+      srvr
+      .getAllFavorite(context).then((value) {
+        setState(() {
+          fav=value.items;
+          _isLoaded = false;
         });
       });
     }
@@ -66,7 +74,7 @@ class _HomeSceenState extends State<HomeSceen> {
     final categoriesData = Provider.of<Categories>(
       context,
     );
-    final categories = categoriesData.items;
+    final categories = itemss;
     Widget getFavorite() {
       if (fav.isEmpty) {
         return Container(
