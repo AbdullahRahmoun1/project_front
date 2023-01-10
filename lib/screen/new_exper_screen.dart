@@ -23,6 +23,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
   var _spec = TextEditingController();
   var _dis = TextEditingController();
   var _adress = TextEditingController();
+  var _isDone = false;
 
   @override
   void dispose() {
@@ -38,6 +39,14 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
     List<Category> expertCat = [];
     var selectedValue = categories[0].name;
     var isCorrect = true;
+    var days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+    ];
     String? id = '0';
     Map<String?, dynamic> expertInfo = {
       "specialty_id": id,
@@ -46,6 +55,110 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
       "address": "",
       "specialization": ""
     };
+    var selectedDay = days[0];
+    void startAddDate(
+      BuildContext ctx,
+    ) {
+      showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return Container(
+            margin: EdgeInsets.only(top: 30, left: 40, right: 40),
+            child: ListView(
+              children: <Widget>[
+                SizedBox(
+                  width: 20,
+                ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      'Set your empty tiem',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(
+                      Icons.schedule,
+                      color: Colors.grey,
+                      size: 30,
+                    )
+                  ],
+                ),
+                DropdownButtonFormField(
+                  icon: const Icon(
+                    Icons.arrow_drop_down_rounded,
+                    color: Colors.deepPurple,
+                    size: 30,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Select day',
+                  ),
+                  value: selectedDay,
+                  items: days
+                      .map(
+                        (e) => DropdownMenuItem(
+                          child: Text(e),
+                          value: e,
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedDay = value!;
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Time Start',
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(onPressed: () {}, child: Text('Time')),
+                  ],
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Time End',
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(onPressed: () {}, child: Text('Time')),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
     void _saveForm() {
       final isValid = _form.currentState!.validate();
@@ -318,51 +431,42 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                 width: screenWidth / 3,
                 child: ElevatedButton(
                   onPressed: () {
-                    _saveForm();
                     print(expertInfo);
                     print('the id = $id');
                     if (isCorrect) {
-                      Provider.of<Server>(context, listen: false)
-                          .becomeExpert(expertInfo, context);
-                      expertCat.add(
-                        Category(
-                            id: id,
-                            color: categories
-                                .firstWhere((element) => element.id == id)
-                                .color,
-                            name: expertInfo['specialization'],
-                            icon: categories
-                                .firstWhere((element) => element.id == id)
-                                .icon),
-                      );
-                      print(expertCat[0]);
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Row(
-                            children: <Widget>[
-                              Text('Congratulations'),
-                              SizedBox(
-                                width: 14,
-                              ),
-                              Icon(
-                                Icons.auto_awesome,
-                                color: Colors.amber,
+                      startAddDate(context);
+                      if (_isDone) {
+                        _saveForm();
+                        Provider.of<Server>(context, listen: false)
+                            .becomeExpert(expertInfo, context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Row(
+                              children: <Widget>[
+                                Text('Congratulations'),
+                                SizedBox(
+                                  width: 14,
+                                ),
+                                Icon(
+                                  Icons.auto_awesome,
+                                  color: Colors.amber,
+                                ),
+                              ],
+                            ),
+                            content: Text(
+                                'You became ${categories.firstWhere((element) => element.id == id).name} expert successfully'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Ok'),
                               ),
                             ],
                           ),
-                          content: Text(
-                              'You became ${categories.firstWhere((element) => element.id == id).name} expert successfully'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Ok'),
-                            ),
-                          ],
-                        ),
-                      );
+                        );
+                      }
                     }
                   },
                   child: Text(

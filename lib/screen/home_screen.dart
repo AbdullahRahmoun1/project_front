@@ -111,19 +111,19 @@ class _HomeSceenState extends State<HomeSceen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.account_circle,
-              color: Colors.white,
-              size: 29,
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(ProfileScreen.routName);
-            },
-          ),
-          _isExpert
-              ? IconButton(
+        actions: _isExpert
+            ? <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                    size: 29,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(ProfileScreen.routName);
+                  },
+                ),
+                IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.calendar_month_rounded,
@@ -131,8 +131,8 @@ class _HomeSceenState extends State<HomeSceen> {
                     size: 29,
                   ),
                 )
-              : Container()
-        ],
+              ]
+            : [Container()],
       ),
       drawer: AppDrawer(_userName, _userPhone),
       body: _isLoaded
