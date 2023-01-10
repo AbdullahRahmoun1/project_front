@@ -43,7 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             await Provider.of<Server>(context).getUserData('-1', context);
         _spec = extraxtData['expertise'];
         _userName = extraxtData['name'];
-        _userName = extraxtData['image'];
         _userPhone = extraxtData['phone'];
         _userImage = extraxtData['image'];
         _creditCard = extraxtData['money'];
