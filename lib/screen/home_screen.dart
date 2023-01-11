@@ -42,7 +42,7 @@ class _HomeSceenState extends State<HomeSceen> {
       });
       itemss = Provider.of<Categories>(context).items;
       try {
-        dynamic extraxtData = await srvr.getUserData('-1', context);
+        dynamic extraxtData = await srvr.getUserData('-1');
         setState(() {
           _userName = extraxtData['name'];
           _userPhone = extraxtData['phone'];
@@ -54,14 +54,14 @@ class _HomeSceenState extends State<HomeSceen> {
       }
 
       srvr
-          .getHome(itemss, context)
+          .getHome(itemss)
           .then((data) {
             setState(() {
               reservations=data['data']['Reservations'];
         });
       });
       srvr
-      .getAllFavorite(context).then((value) {
+      .getAllFavorite().then((value) {
         setState(() {
           fav=value.items;
           _isLoaded = false;

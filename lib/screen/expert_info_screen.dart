@@ -42,7 +42,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
         _isLoading = true;
       });
       try {
-        dynamic extraxtData = await srvr.getUserData(_expertId, context);
+        dynamic extraxtData = await srvr.getUserData(_expertId);
         setState(() {
           _spec = extraxtData['specialize'];
           _userName = extraxtData['name'];
@@ -245,7 +245,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                           )),
                           onPressed: () {
                             setState(() {
-                              srvr.manageLove(_expertId!, context);
+                              srvr.manageLove(_expertId!);
                               _isFav = !_isFav;
                             });
                           }),

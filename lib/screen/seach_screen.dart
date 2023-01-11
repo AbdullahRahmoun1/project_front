@@ -33,12 +33,12 @@ class _SearchScreenState extends State<SearchScreen> {
     var items = Provider.of<Categories>(context).items;
     try {
       dynamic extraxtData =
-          await srvr.getUserData('-1', context);
+          await srvr.getUserData('-1');
       _userName = extraxtData['name'];
       _userPhone = extraxtData['phone'];
       _userImage = extraxtData['image'];
       _isExpert = extraxtData['isExp'];
-      srvr.search('-1',"", context).then((value){
+      srvr.search('-1',"").then((value){
         setState(() {
           experts=value.items;
         });
@@ -141,7 +141,7 @@ class mySearchDelegate extends SearchDelegate {
   }
   @override
   Widget buildResults(BuildContext context){
-    return FutureBuilder(future:srvr.search("-1", query, context)
+    return FutureBuilder(future:srvr.search("-1", query)
         ,builder: (context, AsyncSnapshot<Experts> snapshot) {
           if(snapshot.hasData){
             filtterExpert=snapshot.data!.items;

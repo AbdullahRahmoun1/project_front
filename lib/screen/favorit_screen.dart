@@ -25,7 +25,7 @@ class _FavoritScreen extends State<FavoritScreen> {
   @override
   void didChangeDependencies() {
     srvr
-        .getAllFavorite(context)
+        .getAllFavorite()
         .then((exps) {
               setState(() {
                 fav = exps.items;

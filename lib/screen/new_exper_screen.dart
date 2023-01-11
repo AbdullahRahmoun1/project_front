@@ -317,7 +317,7 @@ class _EditNewExpertScreen extends State<NewExpertScreen> {
                         } else {
                           Navigator.of(context).pop();
                           _saveForm();
-                          srvr.becomeExpert(expertInfo, context);
+                          srvr.becomeExpert(expertInfo);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(

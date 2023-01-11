@@ -13,7 +13,7 @@ class User with ChangeNotifier {
   bool isExpert;
   bool canEdit;
   bool isFavorit;
-  double? rate;
+  double rate;
 
   User(
       {required this.id,
@@ -26,18 +26,4 @@ class User with ChangeNotifier {
       this.canEdit = false,
       this.isFavorit = false,
       this.rate = 0});
-
-  void toggleFavoritStatus() {
-    isFavorit = !isFavorit;
-    notifyListeners();
-  }
-
-  void changRate(double newRate) {
-    rate = newRate;
-    notifyListeners();
-  }
-
-  double? get userRate {
-    return rate;
-  }
 }
