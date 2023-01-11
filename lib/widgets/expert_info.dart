@@ -12,26 +12,16 @@ class ExpertInfo extends StatefulWidget {
 
 class _ExpertInfoState extends State<ExpertInfo> {
   bool _isLoading = true;
-<<<<<<< HEAD
   String? ExpertId = '';
   var selectedExpert = {};
   String? spId = '';
-  var sp = Specialize('', '', '', '', '', '');
+  var sp = Specialize('', '', '', '', '', '', 0.0);
   String? dis = '';
   String? phone = '';
   String? adress = '';
   var _start = TextEditingController();
   var _end = TextEditingController();
   var _isOk = false;
-=======
-  String? ExpertId='';
-  var selectedExpert={};
-  String? spId='';
-  var sp=Specialize('', '', '', '', '', '',0.0);
-  String? dis='';
-  String? phone='';
-  String? adress='';
->>>>>>> cd3e2c70cc8ff5856723d6e845275a1d07811da8
 
   @override
   void didChangeDependencies() {
