@@ -15,7 +15,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
   String? ExpertId='';
   var selectedExpert={};
   String? spId='';
-  var sp=Specialize('', '', '', '', '', '');
+  var sp=Specialize('', '', '', '', '', '',0.0);
   String? dis='';
   String? phone='';
   String? adress='';

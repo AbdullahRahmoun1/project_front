@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? _totalRate;
   String? _creditCard;
   List<Specialize> _spec = [];
-  Specialize currentIndex=Specialize('','','','','','');
+  Specialize currentIndex=Specialize('','','','','','',0);
   var _selectedValue;
 
   @override
