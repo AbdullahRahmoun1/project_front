@@ -23,14 +23,12 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
   @override
   void didChangeDependencies() async {
     ExpertId = ModalRoute.of(context)?.settings.arguments as String?;
-    srvr
-            .getUserData(ExpertId, context)
-            .then((exp) => {
-              setState(() {
-                _isLoading = true;
-                selectedExpert = exp;
-                _isLoading = false;
-              })
+    srvr.getUserData(ExpertId, context).then((exp) => {
+          setState(() {
+            _isLoading = true;
+            selectedExpert = exp;
+            _isLoading = false;
+          })
         });
     super.didChangeDependencies();
   }
@@ -54,10 +52,10 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
     return Scaffold(
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : ListView(
-        children: <Widget>[
+              children: <Widget>[
                 Stack(
                   children: <Widget>[
                     Container(
@@ -111,8 +109,9 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                             backgroundColor: Colors.white,
                             radius: 72,
                             child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage("http://$baseUrl:8000/api/"+selectedExpert?['image']),
+                              backgroundImage: NetworkImage(
+                                  "http://$baseUrl:8000/api/" +
+                                      selectedExpert?['image']),
                               backgroundColor: Colors.white,
                               radius: 70,
                             ),
@@ -143,8 +142,9 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                             size: 30,
                           )),
                           onPressed: () => setState(() {
-                                srvr.manageLove(ExpertId.toString(), context);
-                                selectedExpert?['isFav']=!selectedExpert?['isFav'];
+                            srvr.manageLove(ExpertId.toString(), context);
+                            selectedExpert?['isFav'] =
+                                !selectedExpert?['isFav'];
                           }),
                         )),
                   ],
@@ -179,31 +179,31 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                     ),
                   ),
                 ),
-                // Container(
-                //   //This container for rating
-                //   margin: const EdgeInsets.only(
-                //       top: 10, right: 15, left: 15, bottom: 10),
-                //   padding: EdgeInsets.all(20),
-                //   width: double.infinity,
-                //   decoration: BoxDecoration(
-                //     color: Colors.white,
-                //     borderRadius: BorderRadius.circular(15),
-                //     boxShadow: [
-                //       BoxShadow(
-                //         color:
-                //             const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                //         spreadRadius: 2,
-                //         blurRadius: 5,
-                //         offset:
-                //             const Offset(0, 3), // changes position of shadow
-                //       ),
-                //     ],
-                //   ),
-                //
-                //   child: Rating(),
-                // ),
+                Container(
+                  //This container for rating
+                  margin: const EdgeInsets.only(
+                      top: 10, right: 15, left: 15, bottom: 10),
+                  padding: EdgeInsets.all(20),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+
+                  child: Rating(),
+                ),
               ],
-      ),
+            ),
     );
   }
 }
