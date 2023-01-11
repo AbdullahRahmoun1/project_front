@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
 
-final String baseUrl = '127.0.0.1';
+final String baseUrl = '10.0.2.2';
 String token = "";
 
 class srvr {
@@ -23,9 +23,9 @@ class srvr {
     return token;
   }
 
-  static Future<Map<String,dynamic>> getHome(items) async {
+  static Future<Map<String, dynamic>> getHome(items) async {
     try {
-      var result={'statusCode':400};
+      var result = {'statusCode': 400};
       final url = Uri.parse('http://$baseUrl:8000/api/home');
       var token = await getToken();
       Map<String, String> header = {
@@ -33,8 +33,7 @@ class srvr {
         'Authorization': 'Bearer $token',
       };
       final response = await http.get(url, headers: header);
-      final extractData =
-          json.decode(response.body) ;
+      final extractData = json.decode(response.body);
       for (var i = 0; i < items.length; i++) {
         items[i].name = extractData['data']['Specialities'][i]['specialtyName'];
       }
@@ -43,7 +42,7 @@ class srvr {
     } catch (e) {
       print(e);
     }
-    return {'msg':'failed'};
+    return {'msg': 'failed'};
   }
 
   static Future<Map<String, dynamic>> getUserData(String? id) async {
@@ -79,8 +78,7 @@ class srvr {
     };
   }
 
-  static Future<void> becomeExpert(
-      Map<String?, dynamic> body) async {
+  static Future<void> becomeExpert(Map<String?, dynamic> body) async {
     var token = await getToken();
     var url = Uri.parse('http://$baseUrl:8000/api/expert');
     Map<String, String> header = {
@@ -114,11 +112,12 @@ class srvr {
     if (response.statusCode != 200) {
       throw HttpException(JSONresponse['userMessage']);
     }
-print( JSONresponse);
+    print(JSONresponse);
     List listOfExps = (JSONresponse['data']);
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(
-          id: listOfExps[i]['user_id'].toString(), name: listOfExps[i]['name']));
+          id: listOfExps[i]['user_id'].toString(),
+          name: listOfExps[i]['name']));
     }
     print(exps.items);
     if (exps.items.length == 0) {
@@ -144,7 +143,12 @@ print( JSONresponse);
     } catch (e) {
       print(e);
     }
-    return extractedData;
+    return {
+      'message': extractedData['message'],
+      'data': {
+        'Reservations': extractedData['data']['Reservations'],
+      }
+    };
   }
 
   static Future<bool> manageLove(String expertId) async {
@@ -223,16 +227,17 @@ print( JSONresponse);
     return exps;
   }
 
-  static Future<bool> addTime(expertId,times) async{
-    bool result=false;
+  static Future<bool> addTime(expertId, times) async {
+    bool result = false;
     var token = await getToken();
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
     final url = Uri.parse('http://$baseUrl:8000/api/time');
-    final response = await http.post(url, headers: header,body: json.encode(times));
-    if(response.statusCode==200)result=true;
+    final response =
+        await http.post(url, headers: header, body: json.encode(times));
+    if (response.statusCode == 200) result = true;
     print(response.body);
     return result;
   }
