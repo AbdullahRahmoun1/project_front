@@ -27,10 +27,15 @@ class _ExpertScdualState extends State<ExpertScdual> {
           _isLoaded = true;
         });
         try {
+<<<<<<< HEAD
           dynamic extractedData = await srvr.expertReservation(context);
           setState(() {
             reservations = extractedData['data']['Reservations'];
           });
+=======
+          dynamic extractedData = srvr.expertReservation();
+          reservations = extractedData['data']['Reservations'];
+>>>>>>> cd3e2c70cc8ff5856723d6e845275a1d07811da8
         } catch (e) {
           print(e);
         }

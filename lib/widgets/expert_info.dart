@@ -12,6 +12,7 @@ class ExpertInfo extends StatefulWidget {
 
 class _ExpertInfoState extends State<ExpertInfo> {
   bool _isLoading = true;
+<<<<<<< HEAD
   String? ExpertId = '';
   var selectedExpert = {};
   String? spId = '';
@@ -22,11 +23,20 @@ class _ExpertInfoState extends State<ExpertInfo> {
   var _start = TextEditingController();
   var _end = TextEditingController();
   var _isOk = false;
+=======
+  String? ExpertId='';
+  var selectedExpert={};
+  String? spId='';
+  var sp=Specialize('', '', '', '', '', '',0.0);
+  String? dis='';
+  String? phone='';
+  String? adress='';
+>>>>>>> cd3e2c70cc8ff5856723d6e845275a1d07811da8
 
   @override
   void didChangeDependencies() {
     ExpertId = ModalRoute.of(context)?.settings.arguments as String;
-    srvr.getUserData(ExpertId, context).then((selectedExpert) {
+    srvr.getUserData(ExpertId).then((selectedExpert) {
       setState(() {
         spId = '0';
         print("asdfghjklrxhtcfvygbhun");

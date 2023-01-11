@@ -13,7 +13,7 @@ final String baseUrl = '10.0.2.2';
 String token = "";
 
 class srvr {
-  static Future<String?> getToken(context) async {
+  static Future<String?> getToken() async {
     if (token.isEmpty) {
       final storage = new FlutterSecureStorage();
       String? value = await storage.read(key: 'token');
@@ -23,18 +23,17 @@ class srvr {
     return token;
   }
 
-  static Future<Map<String, dynamic>> getHome(items, context) async {
+  static Future<Map<String, dynamic>> getHome(items) async {
     try {
       var result = {'statusCode': 400};
       final url = Uri.parse('http://$baseUrl:8000/api/home');
-      var token = await getToken(context);
+      var token = await getToken();
       Map<String, String> header = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       };
       final response = await http.get(url, headers: header);
-      final extractData =
-          json.decode(response.body) ;
+      final extractData = json.decode(response.body);
       for (var i = 0; i < items.length; i++) {
         items[i].name = extractData['data']['Specialities'][i]['specialtyName'];
       }
@@ -46,9 +45,9 @@ class srvr {
     return {'msg': 'failed'};
   }
 
-  static Future<Map<String, dynamic>> getUserData(String? id, context) async {
+  static Future<Map<String, dynamic>> getUserData(String? id) async {
     final url = Uri.parse('http://$baseUrl:8000/api/user/$id');
-    var token = await getToken(context);
+    var token = await getToken();
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -64,9 +63,9 @@ class srvr {
           asd[i]['description'],
           extraxtData['data']['phone'],
           asd[i]['address'],
-          asd[i]['price'].toString()));
+          asd[i]['price'].toString(),
+          double.parse(asd[i]['rate'])));
     }
-
     return {
       'name': extraxtData['data']['name'],
       'phone': extraxtData['data']['phone'],
@@ -79,9 +78,8 @@ class srvr {
     };
   }
 
-  static Future<void> becomeExpert(
-      Map<String?, dynamic> body, BuildContext context) async {
-    var token = await getToken(context);
+  static Future<void> becomeExpert(Map<String?, dynamic> body) async {
+    var token = await getToken();
     var url = Uri.parse('http://$baseUrl:8000/api/expert');
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -100,9 +98,9 @@ class srvr {
     }
   }
 
-  static Future<Experts> search(String cat, String query, context) async {
+  static Future<Experts> search(String cat, String query) async {
     Experts exps = Experts();
-    var token = await getToken(context);
+    var token = await getToken();
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -114,11 +112,12 @@ class srvr {
     if (response.statusCode != 200) {
       throw HttpException(JSONresponse['userMessage']);
     }
-
-    List listOfExps = JSONresponse['data'];
+    print(JSONresponse);
+    List listOfExps = (JSONresponse['data']);
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(
-          id: listOfExps[i]['id'].toString(), name: listOfExps[i]['name']));
+          id: listOfExps[i]['user_id'].toString(),
+          name: listOfExps[i]['name']));
     }
     print(exps.items);
     if (exps.items.length == 0) {
@@ -127,8 +126,8 @@ class srvr {
     return exps;
   }
 
-  static Future<Map<String, dynamic>> expertReservation(context) async {
-    var token = await getToken(context);
+  static Future<Map<String, dynamic>> expertReservation() async {
+    var token = await getToken();
     var url = Uri.parse('http://$baseUrl:8000/api/reservation');
     var extractedData;
     Map<String, String> header = {
@@ -152,9 +151,9 @@ class srvr {
     };
   }
 
-  static Future<bool> manageLove(String expertId, context) async {
+  static Future<bool> manageLove(String expertId) async {
     bool result = false;
-    var token = await getToken(context);
+    var token = await getToken();
     var url = Uri.parse('http://$baseUrl:8000/api/favorite');
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -166,6 +165,7 @@ class srvr {
       var response =
           await http.post(url, headers: header, body: json.encode(body));
 
+      print("fafa");
       if (response.statusCode == 200) result = true;
     } catch (e) {
       print(e);
@@ -173,10 +173,10 @@ class srvr {
     return result;
   }
 
-  static Future<Map<String, dynamic>> uploadImage(String image, context) async {
+  static Future<Map<String, dynamic>> uploadImage(String image) async {
     String result = "";
     final url = Uri.parse('http://$baseUrl:8000/api/updateImage');
-    var token = await getToken(context);
+    var token = await getToken();
     Map<String, String> header = {
       'Content-Type': 'multipart/form-data',
       'Accept-Encoding': 'multipart/form-data',
@@ -195,15 +195,17 @@ class srvr {
     return {'msg': dota['userMessage'], 'path': ""};
   }
 
-  static Future<Experts> getAllFavorite(context) async {
+  static Future<Experts> getAllFavorite() async {
     Experts exps = Experts();
-    var token = await getToken(context);
+    var token = await getToken();
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
     final url = Uri.parse('http://$baseUrl:8000/api/favorite');
     final response = await http.get(url, headers: header);
+    print('----------------------------------------');
+    print(response.body);
     final JSONresponse = json.decode(response.body);
 
     print("getFavs");
@@ -225,9 +227,9 @@ class srvr {
     return exps;
   }
 
-  static Future<bool> addTime(BuildContext context, expertId, times) async {
+  static Future<bool> addTime(expertId, times) async {
     bool result = false;
-    var token = await getToken(context);
+    var token = await getToken();
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',

@@ -81,7 +81,7 @@ class _ExpertWidgetState extends State<ExpertWidget> {
                 semanticLabel: '5',
               ),
               Text(
-                getRate().toString(),
+                rate.toString(),
                 style: TextStyle(
                   color: Colors.amber,
                   fontSize: 12,

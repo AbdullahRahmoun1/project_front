@@ -1,11 +1,5 @@
-import 'dart:collection';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import './category.dart';
-import '../server/auth.dart';
-import 'package:http/http.dart' as http;
-import '../server/server.dart';
 
 class Categories with ChangeNotifier {
   List<Category> _items = [

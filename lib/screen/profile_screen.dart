@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? _totalRate;
   String? _creditCard;
   List<Specialize> _spec = [];
-  Specialize currentIndex=Specialize('','','','','','');
+  Specialize currentIndex=Specialize('','','','','','',0);
   var _selectedValue;
 
   @override
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _isLoading = true;
       });
       try {
-        dynamic extraxtData =await srvr.getUserData('-1', context);
+        dynamic extraxtData =await srvr.getUserData('-1');
         setState(() {
           _spec = extraxtData['specialize'];
           _userName = extraxtData['name'];
@@ -194,7 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             if (!(localPath!.isEmpty)) {
                               _isLoading = true;
                               var result=await srvr
-                                  .uploadImage(localPath, context);
+                                  .uploadImage(localPath);
                               var path=result['path'];
                               if (!path.toString().isEmpty) {
                                 setState(() {

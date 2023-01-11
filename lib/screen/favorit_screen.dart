@@ -15,33 +15,39 @@ class FavoritScreen extends StatefulWidget {
 class _FavoritScreen extends State<FavoritScreen> {
   static final routName = '/favorit-screen';
   List<User> fav = Experts().items;
-  var _isLoaded = true;
+  bool _isLoading = true;
   @override
   void initState() {
+    _isLoading = true;
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     srvr
-        .getAllFavorite(context)
+        .getAllFavorite()
         .then((exps) {
               setState(() {
                 fav = exps.items;
-                _isLoaded = false;
+                _isLoading = false;
               });
           });
     super.didChangeDependencies();
   }
   @override
   Widget build(BuildContext context) {
-    if (fav.isEmpty) {
-      return Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('Your Favorites'),
         ),
         drawer: Drawer(),
-        body: Column(
+        body: _isLoading
+            ? Center(
+          child: CircularProgressIndicator(),
+        )
+            :
+        fav.isEmpty?
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
@@ -65,19 +71,9 @@ class _FavoritScreen extends State<FavoritScreen> {
               ),
             ),
           ],
-        ),
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Your Favorites'),
-        ),
-        drawer: Drawer(),
-        body: _isLoaded
-            ? Center(
-          child: CircularProgressIndicator(),
         )
-            :ListView.builder(
+            :
+        ListView.builder(
           itemCount: fav.length,
           itemBuilder: (context, index) => ChangeNotifierProvider.value(
             value: fav[index],
@@ -85,6 +81,6 @@ class _FavoritScreen extends State<FavoritScreen> {
           ),
         ),
       );
-    }
+
   }
 }
