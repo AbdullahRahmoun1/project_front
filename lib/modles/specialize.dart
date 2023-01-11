@@ -5,6 +5,7 @@ class Specialize {
   String? number;
   String? adress;
   String? price;
+  double? rate;
 
-  Specialize(this.id, this.name, this.discription, this.number, this.adress, this.price);
+  Specialize(this.id, this.name, this.discription, this.number, this.adress, this.price, this.rate);
 }

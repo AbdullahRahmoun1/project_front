@@ -64,7 +64,8 @@ class srvr {
           asd[i]['description'],
           extraxtData['data']['phone'],
           asd[i]['address'],
-          asd[i]['price'].toString()));
+          asd[i]['price'].toString(),
+          double.parse(asd[i]['rate'])));
     }
     return {
       'name': extraxtData['data']['name'],

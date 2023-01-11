@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../modles/specialize.dart';
 import '../server/server.dart';
 
@@ -19,12 +20,13 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
   String? _idSp = '';
   String? _userAdress = '';
   String? _price;
-  String? _totalRate;
+  String? _totalRate='0';
+  double? _spRate=0;
   String? _creditCard;
   bool _isFav = false;
   String? _expertId;
   List<Specialize> _spec = [];
-  Specialize currentIndex = Specialize('', '', '', '', '', '');
+  Specialize currentIndex = Specialize('', '', '', '', '', '',0.0);
   var _selectedValue;
 
   @override
@@ -47,8 +49,9 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
           _userPhone = extraxtData['phone'];
           _userImage = extraxtData['image'];
           _isFav = extraxtData['isFav'];
+          _totalRate =extraxtData['totalRate'].toString();
           _creditCard = extraxtData['money'].toString();
-          _totalRate = extraxtData['totalRate'].toString();
+          _spRate =_spec[0].rate;
           _price = _spec[0].price.toString();
           _userDis = _spec[0].discription;
           _userAdress = _spec[0].adress;
@@ -85,6 +88,57 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    double? _Rating = _spRate;
+
+    Widget buildRatring() => RatingBar.builder(
+      initialRating: _Rating!,
+      minRating: 1,
+      updateOnDrag: true,
+      itemPadding: const EdgeInsets.symmetric(horizontal: 7),
+      itemBuilder: ((context, index) => const Icon(
+        Icons.star_rate_rounded,
+        color: Colors.amber,
+      )),
+      onRatingUpdate: (rating) => setState(() {
+        _Rating = rating;
+        //experts.changeRate(ExpertId, rating);
+      }),
+    );
+
+    void showRating() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Rating this expert',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Please leave a star rating.',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              buildRatring(),
+            ]),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Ok',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ))
+        ],
+      ),
+    );
+
     return Scaffold(
       body: _isLoading
           ? Center(
@@ -419,7 +473,56 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                     ),
                   ),
                 ),
-                
+    Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+    Container(
+    alignment: Alignment.center,
+    margin: EdgeInsets.all(10),
+    child: RatingBar.builder(
+    initialRating: _Rating!,
+    minRating: 1,
+    updateOnDrag: true,
+    itemPadding: const EdgeInsets.symmetric(horizontal: 7),
+    itemBuilder: ((context, index) => const Icon(
+    Icons.star_rate_rounded,
+    color: Colors.amber,
+    )),
+    onRatingUpdate: (rating) => setState(() {
+    _Rating = rating;
+    _spRate = rating;
+    }),
+    ),
+    ),
+    Container(
+    margin: EdgeInsets.only(left: 50),
+    child: Text(
+    'Rating $_Rating',
+    style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    ),
+    ),
+    ),
+    Container(
+    alignment: Alignment.bottomCenter,
+    margin: EdgeInsets.only(top: 20, bottom: 10),
+    child: OutlinedButton(
+    onPressed: () => showRating(),
+    child: Text(
+    'Rating now',
+    style: TextStyle(
+    color: Colors.deepPurple,
+    fontWeight: FontWeight.bold,
+    fontSize: 19),
+    ),
+    style: OutlinedButton.styleFrom(
+    side: BorderSide(color: Colors.deepPurple),
+    ),
+    ),
+    ),
+    ],
+    )
               ],
             ),
     );
