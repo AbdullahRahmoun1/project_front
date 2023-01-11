@@ -18,14 +18,20 @@ class _SearchScreenState extends State<SearchScreen> {
   var _isInit = true;
   var _isLoaded = false;
   bool _isExpert = false;
+  static String categoryId="-1";//change it to yours
+  static String categoryName="All";//also this
+
   String _userName = '';
   String _userPhone = '';
   String _userImage = '';
   List<User>experts=[];
+ // to change the hint value
+ // mySearchDelegate.categoryName="";
 
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -109,7 +115,6 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 class mySearchDelegate extends SearchDelegate {
-  String categoryName="nothing";
   List<User> filtterExpert =[];
 
   @override
@@ -128,7 +133,7 @@ class mySearchDelegate extends SearchDelegate {
     ];
   }
   @override
-  String? get searchFieldLabel => 'Search in $categoryName';
+  String? get searchFieldLabel => 'Search in ${_SearchScreenState.categoryName} category';
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
@@ -141,7 +146,7 @@ class mySearchDelegate extends SearchDelegate {
   }
   @override
   Widget buildResults(BuildContext context){
-    return FutureBuilder(future:srvr.search("-1", query)
+    return FutureBuilder(future:srvr.search(_SearchScreenState.categoryId, query)
         ,builder: (context, AsyncSnapshot<Experts> snapshot) {
           if(snapshot.hasData){
             filtterExpert=snapshot.data!.items;
