@@ -110,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //thins container for avatar and name
                       margin: const EdgeInsets.only(left: 5, right: 5),
                       width: double.infinity,
-                      height: 270,
+                      height: 320,
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           colors: [

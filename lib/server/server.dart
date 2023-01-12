@@ -8,19 +8,21 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import '../providers/experts.dart';
 import '../modles/http_exception.dart';
+import 'auth.dart';
 
-final String baseUrl = '10.0.2.2';
+final String baseUrl = '127.0.0.1';
 String token = "";
 
 class srvr {
-  static Future<String?> getToken() async {
+  static Future<String?> getToken() async{
     if (token.isEmpty) {
       final storage = new FlutterSecureStorage();
       String? value = await storage.read(key: 'token');
       token = value!;
     }
+
     print(token);
-    return token;
+    return Auth.token;
   }
 
   static Future<Map<String, dynamic>> getHome(items) async {
@@ -53,6 +55,8 @@ class srvr {
       'Authorization': 'Bearer $token',
     };
     final response = await http.get(url, headers: header);
+    print('--=---------------------==========-------------==');
+    print(response.body);
     final extraxtData = json.decode(response.body) as Map<String, dynamic>;
     List asd = extraxtData['data']['Expertise'];
     List<Specialize> dsa = [];
@@ -63,9 +67,20 @@ class srvr {
           asd[i]['description'],
           extraxtData['data']['phone'],
           asd[i]['address'],
-          asd[i]['price'].toString(),
-          double.parse(asd[i]['rate'])));
+          asd[i]['price'].toString(),0
+          ));
+      //double.parse(asd[i]['rate'])
     }
+    print({
+      'name': extraxtData['data']['name'],
+      'phone': extraxtData['data']['phone'],
+      'isExp': extraxtData['data']['isExp'],
+      'isFav': extraxtData['data']['isFav'],
+      'image': extraxtData['data']['image'],
+      'specialize': dsa,
+      'money': extraxtData['data']['money'],
+      'totalRate': extraxtData['data']['Total ratings'],
+    });
     return {
       'name': extraxtData['data']['name'],
       'phone': extraxtData['data']['phone'],
@@ -117,7 +132,9 @@ class srvr {
     for (int i = 0; i < listOfExps.length; i++) {
       exps.addExpert(User(
           id: listOfExps[i]['user_id'].toString(),
-          name: listOfExps[i]['name']));
+          name: listOfExps[i]['name'],
+          imagePath: listOfExps[i]['image']),
+      );
     }
     print(exps.items);
     if (exps.items.length == 0) {

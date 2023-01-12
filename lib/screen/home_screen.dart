@@ -41,15 +41,18 @@ class _HomeSceenState extends State<HomeSceen> {
         _isLoaded = true;
       });
       itemss = Provider.of<Categories>(context).items;
-      try {
+      try{
         dynamic extraxtData = await srvr.getUserData('-1');
         setState(() {
           _userName = extraxtData['name'];
           _userPhone = extraxtData['phone'];
           _userImage = extraxtData['image'];
           _isExpert = extraxtData['isExp'];
+          print('----------------_____________________-------------------------');
+          print(_isExpert);
         });
       } catch (e) {
+        print('errore______________________________________________________________________+++++++++++');
         print(e);
       }
 

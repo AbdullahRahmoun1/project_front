@@ -40,7 +40,6 @@ class _FavoritScreen extends State<FavoritScreen> {
         appBar: AppBar(
           title: Text('Your Favorites'),
         ),
-        drawer: Drawer(),
         body: _isLoading
             ? Center(
           child: CircularProgressIndicator(),
