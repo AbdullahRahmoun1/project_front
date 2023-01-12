@@ -146,7 +146,7 @@ class mySearchDelegate extends SearchDelegate {
   }
   @override
   Widget buildResults(BuildContext context){
-    return FutureBuilder(future:srvr.search(_SearchScreenState.categoryId, query)
+    return FutureBuilder(future:srvr.search(_SearchScreenState.categoryId.toString(), query.toString())
         ,builder: (context, AsyncSnapshot<Experts> snapshot) {
           if(snapshot.hasData){
             filtterExpert=snapshot.data!.items;

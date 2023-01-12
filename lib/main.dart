@@ -1,6 +1,5 @@
 import 'package:consulting_app/screen/expert_scdual.dart';
 import 'package:consulting_app/screen/profile_screen.dart';
-import 'package:consulting_app/screen/start_screen.dart';
 import 'package:flutter/material.dart';
 import './providers/categories.dart';
 import './providers/experts.dart';
@@ -69,7 +68,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
           ),
-          home: auth.isAuth ? TabsScreen() : StartScreen(),
+          home: auth.isAuth ? TabsScreen() : AuthScreen(),
           routes: {
             GetStartedActivate.routName: (context) => GetStartedActivate(),
             ExpertScdual.nameRout: (context) => ExpertScdual(),
