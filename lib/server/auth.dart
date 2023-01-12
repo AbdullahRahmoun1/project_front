@@ -8,7 +8,7 @@ import 'server.dart';
 
 class Auth with ChangeNotifier {
   bool isLogedIn = false;
-  String? _token;
+  static String? _token;
 
   void storeToken({String? token}) {}
 
@@ -18,7 +18,7 @@ class Auth with ChangeNotifier {
     return token != null;
   }
 
-  String? get token {
+  static String? get token {
     if (_token != null) return _token;
     return null;
   }
@@ -54,6 +54,9 @@ class Auth with ChangeNotifier {
       }
 
       final storage = new FlutterSecureStorage();
+      if(await storage.containsKey(key: 'token')){
+        await storage.delete(key: 'token');
+      }
       await storage.write(key: 'token', value: _token);
       notifyListeners();
     } catch (e) {
@@ -87,7 +90,6 @@ class Auth with ChangeNotifier {
           responData['message'],
         );
       }
-
       notifyListeners();
     } catch (e) {
       throw e;

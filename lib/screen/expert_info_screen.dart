@@ -166,7 +166,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                       //thins container for avatar and name
                       margin: const EdgeInsets.only(left: 5, right: 5),
                       width: double.infinity,
-                      height: 270,
+                      height: 320,
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           colors: [
@@ -210,13 +210,18 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                             ),
                           ),
                           CircleAvatar(
-                            backgroundColor: Colors.white,
+                            backgroundImage:
+                                AssetImage('assets/images/cosn.png'),
                             radius: 72,
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "http://$baseUrl:8000/api/" + _userImage!),
-                              backgroundColor: Colors.white,
-                              radius: 70,
+                              backgroundColor: Color.fromRGBO(1, 1, 1, 255),
+                              radius: 72,
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "http://$baseUrl:8000/api/" + _userImage!),
+                                backgroundColor: Color.fromRGBO(1, 1, 1, 255),
+                                radius: 70,
+                              ),
                             ),
                           ),
                           Container(
@@ -472,29 +477,56 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                     ),
                   ),
                 ),
-                // Container(
-                //   //This container for rating
-                //   margin: const EdgeInsets.only(
-                //       top: 10, right: 15, left: 15, bottom: 10),
-                //   padding: EdgeInsets.all(20),
-                //   width: double.infinity,
-                //   decoration: BoxDecoration(
-                //     color: Colors.white,
-                //     borderRadius: BorderRadius.circular(15),
-                //     boxShadow: [
-                //       BoxShadow(
-                //         color:
-                //             const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                //         spreadRadius: 2,
-                //         blurRadius: 5,
-                //         offset:
-                //             const Offset(0, 3), // changes position of shadow
-                //       ),
-                //     ],
-                //   ),
-                //
-                //   child: Rating(),
-                // ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(10),
+                      child: RatingBar.builder(
+                        initialRating: _Rating!,
+                        minRating: 1,
+                        updateOnDrag: true,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 7),
+                        itemBuilder: ((context, index) => const Icon(
+                              Icons.star_rate_rounded,
+                              color: Colors.amber,
+                            )),
+                        onRatingUpdate: (rating) => setState(() {
+                          _Rating = rating;
+                          _spRate = rating;
+                        }),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 50),
+                      child: Text(
+                        'Rating $_Rating',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      margin: EdgeInsets.only(top: 20, bottom: 10),
+                      child: OutlinedButton(
+                        onPressed: () => showRating(),
+                        child: Text(
+                          'Rating now',
+                          style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 19),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.deepPurple),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
     );

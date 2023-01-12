@@ -10,7 +10,7 @@ class Categories with ChangeNotifier {
       icon: Icon(
         Icons.medical_services,
         color: Colors.white,
-        size: 45,
+        size: 35,
       ),
     ),
     Category(
@@ -20,7 +20,7 @@ class Categories with ChangeNotifier {
       icon: Icon(
         Icons.workspace_premium,
         color: Colors.white,
-        size: 45,
+        size: 35,
       ),
     ),
     Category(
@@ -30,7 +30,7 @@ class Categories with ChangeNotifier {
       icon: Icon(
         Icons.business_center,
         color: Colors.white,
-        size: 45,
+        size: 35,
       ),
     ),
     Category(
@@ -40,7 +40,7 @@ class Categories with ChangeNotifier {
       icon: Icon(
         Icons.family_restroom,
         color: Colors.white,
-        size: 45,
+        size: 35,
       ),
     ),
     Category(
@@ -50,7 +50,7 @@ class Categories with ChangeNotifier {
       icon: Icon(
         Icons.psychology,
         color: Colors.white,
-        size: 45,
+        size: 35,
       ),
     ),
   ];

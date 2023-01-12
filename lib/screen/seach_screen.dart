@@ -16,7 +16,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   var _isInit = true;
-  var _isLoaded = false;
+  var _isLoaded = true;
   bool _isExpert = false;
   static String categoryId="-1";//change it to yours
   static String categoryName="All";//also this
@@ -47,6 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
       srvr.search('-1',"").then((value){
         setState(() {
           experts=value.items;
+          _isLoaded = false;
         });
 
       });
@@ -82,7 +83,9 @@ class _SearchScreenState extends State<SearchScreen> {
         ],
       ),
       drawer: AppDrawer(_userName, _userPhone, _userImage),
-      body: Container(
+      body:_isLoaded? Center(
+        child: CircularProgressIndicator(),
+      ):Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

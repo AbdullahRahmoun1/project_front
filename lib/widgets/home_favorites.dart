@@ -21,11 +21,17 @@ class HomeFavorites extends StatelessWidget {
         children: <Widget>[
           InkWell(
             onTap: () => getFavorite(context),
+            child:CircleAvatar(
+              backgroundImage: AssetImage('assets/images/cosn.png'),
+            radius: 50,
             child: CircleAvatar(
+              backgroundColor: Color.fromRGBO(1, 1, 1, 255),
               backgroundImage: NetworkImage(
                   "http://$baseUrl:8000/api/" + imagePath),
               radius: 50,
             ),
+            )
+
           ),
           SizedBox(
             height: 5,
